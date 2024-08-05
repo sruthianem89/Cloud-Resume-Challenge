@@ -1,0 +1,42 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    paths:
+      - 'index.html'
+      - '*.js'
+      - '*.css'
+      - 'lambda_function.py'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Cypress tests
+        run: npm run cypress:run
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Deploy to AWS
+        run: |
+         # Add your deployment commands here
+         # For example, to deploy a Lambda function:
+         aws lambda update-function-code --function-name my-function --zip-file fileb://function.zip
