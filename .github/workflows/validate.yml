@@ -1,0 +1,40 @@
+#This workflow runs on pushes and pull requests to validate code and run tests. It does not update infrastructure.
+name: Validate Changes
+
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+    paths:
+      - 'FrontEnd/**'
+      - 'BackEnd/**'
+      - '.github/workflows/validate.yml'
+  
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'FrontEnd/**'
+      - 'BackEnd/lambda_function.py'
+      - '.github/workflows/validate.yml'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Cypress tests
+        run: npm run cypress:run
+
