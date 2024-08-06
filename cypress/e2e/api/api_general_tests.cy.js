@@ -1,5 +1,5 @@
 describe('API Tests', () => {
-    const apiUrl = 'https://cdoeemsrj7rh5qopepmez532gy0gcglf.lambda-url.us-east-1.on.aws/';
+    const apiUrl = 'https://ufzbpvnwxu3idxfbhczvwftxoi0xtkux.lambda-url.us-east-1.on.aws/';
   
     it('should return correct status code and body', () => {
       cy.request(apiUrl).then((response) => {

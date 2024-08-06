@@ -42,7 +42,7 @@ jobs:
 
       - name: Update Lambda function
         run: |
-          aws lambda update-function-code --function-name crclambdasru --zip-file fileb://lambda_function.zip
+          aws lambda update-function-code --function-name crclsru --zip-file fileb://lambda_function.zip
       
       - name: Run Cypress tests
         run: npm run cypress:run
