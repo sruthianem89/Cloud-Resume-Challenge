@@ -42,7 +42,7 @@ jobs:
 
       - name: Zip Lambda function code
         run: |
-          zip -r lambda_function.zip "Back End"/
+          zip -r lambda_function.zip "Back End/"
       
       - name: Update Lambda function
         run: |
