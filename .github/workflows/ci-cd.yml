@@ -42,7 +42,7 @@ jobs:
 
       - name: Zip Lambda function code
         run: |
-          cd BackEnd/
+          cd BackEnd
           zip ../lambda_function.zip lambda_function.py
 
       - name: List zip file contents
