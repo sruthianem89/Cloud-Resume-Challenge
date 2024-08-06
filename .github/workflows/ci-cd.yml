@@ -42,8 +42,8 @@ jobs:
 
       - name: Zip Lambda function code
         run: |
-          zip -r lambda_function.zip Back End/
+          zip -r lambda_function.zip "Back End"/
       
       - name: Update Lambda function
         run: |
-          aws lambda update-function-code --function-name crclambdasru --zip-file fileb://Back End/lambda_function.zip
+          aws lambda update-function-code --function-name crclambdasru --zip-file fileb://lambda_function.zip
