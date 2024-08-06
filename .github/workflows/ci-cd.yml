@@ -8,6 +8,7 @@ on:
       - 'Front End/css/*.css'
       - 'Front End/images/*.jpg'
       - 'Back End/lambda_function.py'
+      - '.github/workflows/ci-cd.yml'
 
 jobs:
   build-and-test:
@@ -31,8 +32,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: arn:aws:iam::713104041406:role/github_actions_user
+          aws-region: us-east-1
 
       - name: Sync s3 bucket
         run: |
