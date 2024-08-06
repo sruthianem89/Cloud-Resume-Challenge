@@ -1,18 +1,23 @@
 #This workflow runs only when changes are merged into the main branch. It handles updating AWS infrastructure.
 name: Deploy to AWS
 
+#on:
+  #workflow_run:
+  #  workflows: ["Validate Changes"]
+  #  types:
+  #    - completed
+  #  branches:
+  #    - main
 on:
-  workflow_run:
-    workflows: ["Validate Changes"]
-    types:
-      - completed
+  push:
     branches:
       - main
+      - feature/*
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion == 'success'
+    
 
     steps:
       - name: Checkout code
