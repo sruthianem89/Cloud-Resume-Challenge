@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 
     // Fetch count value from Azure Function and update the page
-    fetch('https://cdoeemsrj7rh5qopepmez532gy0gcglf.lambda-url.us-east-1.on.aws/')
+    fetch('https://ufzbpvnwxu3idxfbhczvwftxoi0xtkux.lambda-url.us-east-1.on.aws/')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');

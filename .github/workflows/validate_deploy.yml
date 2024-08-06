@@ -38,7 +38,7 @@ jobs:
       - name: Zip Lambda function code
         run: |
           cd BackEnd
-          zip -r ../lambda_function.zip.
+          zip -r ../lambda_function.zip .
 
       - name: Update Lambda function
         run: |
