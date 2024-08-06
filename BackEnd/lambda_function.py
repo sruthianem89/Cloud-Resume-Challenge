@@ -24,7 +24,7 @@ def lambda_handler(event, context):
 			counter = item[counter_attribute] + 1
 			item[counter_attribute] = counter
 
-			# Update the entity in the table
+			# Update the entity in DynamoDB
 			table.put_item(Item=item)
 
 			# Return the counter as a plain text response
