@@ -1,13 +1,6 @@
 #This workflow runs only when changes are merged into the main branch. It handles updating AWS infrastructure.
-name: Deploy to AWS
+name: Validate & Deploy
 
-#on:
-  #workflow_run:
-  #  workflows: ["Validate Changes"]
-  #  types:
-  #    - completed
-  #  branches:
-  #    - main
 on:
   push:
     branches:
@@ -23,6 +16,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -37,8 +38,11 @@ jobs:
       - name: Zip Lambda function code
         run: |
           cd BackEnd
-          zip -r lambda_function.zip.
+          zip -r ../lambda_function.zip.
 
       - name: Update Lambda function
         run: |
           aws lambda update-function-code --function-name crclambdasru --zip-file fileb://lambda_function.zip
+      
+      - name: Run Cypress tests
+        run: npm run cypress:run
