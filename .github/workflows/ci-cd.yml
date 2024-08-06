@@ -39,14 +39,11 @@ jobs:
       - name: Sync s3 bucket
         run: |
           aws s3 sync "FrontEnd/" s3://crcsruthi --exclude "*" --include "index.html" --include "css/*.css" --include "js/*.js" --include "images/*.jpg" --delete
-        
-      - name: List Back End directory contents
-        run: |
-              ls -l "BackEnd/"
 
       - name: Zip Lambda function code
         run: |
-          zip -r lambda_function.zip BackEnd/
+          cd BackEnd/
+          zip ../lambda_function.zip lambda_function.py
 
       - name: List zip file contents
         run: |
