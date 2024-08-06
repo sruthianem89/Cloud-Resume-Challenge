@@ -3,11 +3,11 @@ name: CI/CD Pipeline
 on:
   push:
     paths:
-      - 'Front End/index.html'
-      - 'Front End/js/*.js'
-      - 'Front End/css/*.css'
-      - 'Front End/images/*.jpg'
-      - 'Back End/lambda_function.py'
+      - 'FrontEnd/index.html'
+      - 'FrontEnd/js/*.js'
+      - 'FrontEnd/css/*.css'
+      - 'FrontEnd/images/*.jpg'
+      - 'BackEnd/lambda_function.py'
       - '.github/workflows/ci-cd.yml'
 
 jobs:
@@ -35,14 +35,23 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-
+      
       - name: Sync s3 bucket
         run: |
           aws s3 sync "Front End/" s3://crcsruthi --exclude "*" --include "index.html" --include "css/*.css" --include "js/*.js" --include "images/*.jpg" --delete
+        
+      - name: List Back End directory contents
+        run: |
+              ls -l "BackEnd/"
 
       - name: Zip Lambda function code
         run: |
-          zip -r lambda_function.zip "Back End/"
+          zip -r lambda_function.zip BackEnd/
+
+      - name: List zip file contents
+        run: |
+            ls -l
+            unzip -l lambda_function.zip
       
       - name: Update Lambda function
         run: |
