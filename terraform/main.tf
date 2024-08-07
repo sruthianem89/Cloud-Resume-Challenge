@@ -105,14 +105,30 @@ resource "aws_iam_role_policy_attachment" "lambda_dynamodb_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
 }
 
+# Zip Lambda function code
+resource "null_resource" "zip_lambda_function_code" {
+  provisioner "local-exec" {
+    command = "cd ../backend && zip -r ../lambda_function.zip ."
+  }
+
+  # Ensure the zip is created before the Lambda function
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+}
+
 # Define the Lambda function
 resource "aws_lambda_function" "frontend_lambda" {
   function_name = var.lambda_name
-  filename      = "${path.module}/../backend/${var.lambda_name}.zip"
+  filename      = "${path.module}/../lambda_function.zip"
   handler       = "lambda.handler"
   runtime       = var.lambda_runtime
   role          = aws_iam_role.lambda_role.arn
+
+  # Ensure the Lambda function is created after the zip file
+  depends_on = [null_resource.zip_lambda_function_code]
 }
+
 
 # Enable function URL and CORS
 resource "aws_lambda_function_url" "frontend_lambda_url" {
