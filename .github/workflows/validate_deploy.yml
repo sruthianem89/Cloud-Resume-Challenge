@@ -7,8 +7,8 @@ on:
       - main
       - feature/*
     paths:
-      - 'frontEnd/**'
-      - 'backEnd/**'
+      - 'frontend/**'
+      - 'backend/**'
 
 jobs:
   deploy:
