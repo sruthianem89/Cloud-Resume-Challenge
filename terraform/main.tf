@@ -5,6 +5,12 @@ terraform {
 	  version = "~> 4.0"
 	}
   }
+
+  backend "s3" {
+	bucket         = "terraformstatesru"
+	key            = "path/to/your/terraform.tfstate"
+	region         = var.region_name
+  }
 }
 
 provider "aws" {
@@ -48,7 +54,7 @@ resource "aws_s3_object" "scripts_js" {
   etag   = filemd5("${path.module}/../frontend/js/scripts.js")
 }
 
-resource "aws_s3_object" "profile_image" {  # Corrected duplicate resource name
+resource "aws_s3_object" "profile_image" {
   bucket = aws_s3_bucket.frontend_bucket.bucket
   key    = "images/profile.jpg"
   source = "${path.module}/../frontend/images/profile.jpg"
