@@ -1,9 +1,9 @@
 terraform {
   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.0"
-    }
+	aws = {
+	  source  = "hashicorp/aws"
+	  version = "~> 4.0"
+	}
   }
 }
 
@@ -19,11 +19,11 @@ resource "aws_s3_bucket_website_configuration" "frontend_bucket_website" {
   bucket = aws_s3_bucket.frontend_bucket.bucket
 
   index_document {
-  suffix = "index.html"
+	suffix = "index.html"
   }
 
   error_document {
-  key = "index.html"
+	key = "index.html"
   }
 }
 
@@ -33,7 +33,6 @@ resource "aws_s3_object" "index_html" {
   source = "${path.module}/../frontend/index.html"
   etag   = filemd5("${path.module}/../frontend/index.html")
 }
-
 
 resource "aws_s3_object" "styles_css" {
   bucket = aws_s3_bucket.frontend_bucket.bucket
@@ -49,6 +48,12 @@ resource "aws_s3_object" "scripts_js" {
   etag   = filemd5("${path.module}/../frontend/js/scripts.js")
 }
 
+resource "aws_s3_object" "profile_image" {  # Corrected duplicate resource name
+  bucket = aws_s3_bucket.frontend_bucket.bucket
+  key    = "images/profile.jpg"
+  source = "${path.module}/../frontend/images/profile.jpg"
+  etag   = filemd5("${path.module}/../frontend/images/profile.jpg")
+}
 
 resource "aws_s3_bucket_policy" "frontend_bucket_policy" {
   bucket = aws_s3_bucket.frontend_bucket.id
@@ -64,6 +69,14 @@ resource "aws_s3_bucket_policy" "frontend_bucket_policy" {
 	  }
 	]
   })
+}
+
+resource "aws_s3_bucket_public_access_block" "frontend_bucket_public_access_block" {
+  bucket                  = aws_s3_bucket.frontend_bucket.id
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
 }
 
 output "website_url" {
