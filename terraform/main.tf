@@ -30,23 +30,23 @@ resource "aws_s3_bucket_website_configuration" "frontend_bucket_website" {
 resource "aws_s3_object" "index_html" {
   bucket = aws_s3_bucket.frontend_bucket.bucket
   key    = "index.html"
-  source = "frontend/index.html"
-  etag   = filemd5("frontend/index.html")
+  source = "${path.module}/../frontend/index.html"
+  etag   = filemd5("${path.module}/../frontend/index.html")
 }
 
 
 resource "aws_s3_object" "styles_css" {
   bucket = aws_s3_bucket.frontend_bucket.bucket
   key    = "css/styles.css"
-  source = "frontend/css/styles.css"
-  etag   = filemd5("frontend/css/styles.css")
+  source = "${path.module}/../frontend/css/styles.css"
+  etag   = filemd5("${path.module}/../frontend/css/styles.css")
 }
 
 resource "aws_s3_object" "scripts_js" {
   bucket = aws_s3_bucket.frontend_bucket.bucket
   key    = "js/scripts.js"
-  source = "frontend/js/scripts.js"
-  etag   = filemd5("frontend/js/scripts.js")
+  source = "${path.module}/../frontend/js/scripts.js"
+  etag   = filemd5("${path.module}/../frontend/js/scripts.js")
 }
 
 
@@ -67,5 +67,5 @@ resource "aws_s3_bucket_policy" "frontend_bucket_policy" {
 }
 
 output "website_url" {
-  value = aws_s3_bucket.frontend_bucket.website_endpoint
+  value = aws_s3_bucket.frontend_bucket.website_domain
 }
