@@ -6,9 +6,7 @@ on:
     branches:
       - main
       - feature/*
-    paths:
-      - 'frontend/**'
-      - 'backend/**'
+
 
 jobs:
   deploy:
