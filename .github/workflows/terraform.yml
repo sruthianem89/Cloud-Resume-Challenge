@@ -4,7 +4,10 @@ on:
   push:
     branches:
       - main
-
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - 'terraform/**'
 jobs:
   terraform:
     runs-on: ubuntu-latest
@@ -30,5 +33,17 @@ jobs:
       working-directory: ./terraform
 
     - name: Apply Terraform
-      run: terraform apply -auto-approve
+      run: terraform apply -auto-approve -json | tee terraform_output.json
       working-directory: ./terraform
+
+    - name: Extract bucket name
+      id: extract_bucket_name
+      run: |
+        bucket_name=$(jq -r '.outputs.bucket_name.value' terraform/terraform_output.json)
+        echo "bucket_name=$bucket_name" >> $GITHUB_ENV
+
+    - name: Sync s3 bucket
+      run: |
+        aws s3 sync "frontend/" s3://$bucket_name --exclude "*" --include "index.html" --include "css/*.css" --include "js/*.js" --include "images/*.jpg" --delete
+      env:
+        bucket_name: ${{ env.bucket_name }}

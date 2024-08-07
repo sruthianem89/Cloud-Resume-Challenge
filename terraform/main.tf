@@ -92,3 +92,8 @@ resource "aws_s3_bucket_public_access_block" "frontend_bucket_public_access_bloc
 output "website_url" {
   value = "http://${aws_s3_bucket.frontend_bucket.bucket}.s3-website-${var.region_name}.amazonaws.com"
 }
+
+output "bucket_name" {
+  value = aws_s3_bucket.frontend_bucket.bucket
+}
+
