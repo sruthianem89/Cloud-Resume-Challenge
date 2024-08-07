@@ -36,11 +36,11 @@ jobs:
 
       - name: Sync s3 bucket
         run: |
-          aws s3 sync "frontEnd/" s3://crcsruthi --exclude "*" --include "index.html" --include "css/*.css" --include "js/*.js" --include "images/*.jpg" --delete
+          aws s3 sync "frontend/" s3://crcsruthi --exclude "*" --include "index.html" --include "css/*.css" --include "js/*.js" --include "images/*.jpg" --delete
 
       - name: Zip Lambda function code
         run: |
-          cd backEnd
+          cd backend
           zip -r ../lambda_function.zip .
 
       - name: Update Lambda function
