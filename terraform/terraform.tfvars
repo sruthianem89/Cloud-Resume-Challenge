@@ -1,2 +1,2 @@
 region_name = "us-east-1"
-bucket_name = "sruthiwebsite"
+bucket_name = "sruthiweb"
