@@ -13,3 +13,8 @@ variable "lambda_name" {
   description = "The name of the lambda function"
   type        = string
 }
+
+variable "lambda_runtime" {
+  description = "This is the lambda runtime environment"
+  type        = string
+}
