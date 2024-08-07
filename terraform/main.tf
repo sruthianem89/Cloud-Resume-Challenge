@@ -34,31 +34,35 @@ resource "aws_s3_bucket_website_configuration" "frontend_bucket_website" {
 }
 
 resource "aws_s3_object" "index_html" {
-  bucket = aws_s3_bucket.frontend_bucket.bucket
-  key    = "index.html"
-  source = "${path.module}/../frontend/index.html"
-  etag   = filemd5("${path.module}/../frontend/index.html")
+  bucket       = aws_s3_bucket.frontend_bucket.bucket
+  key          = "index.html"
+  source       = "${path.module}/../frontend/index.html"
+  etag         = filemd5("${path.module}/../frontend/index.html")
+  content_type = "text/html"
 }
 
 resource "aws_s3_object" "styles_css" {
-  bucket = aws_s3_bucket.frontend_bucket.bucket
-  key    = "css/styles.css"
-  source = "${path.module}/../frontend/css/styles.css"
-  etag   = filemd5("${path.module}/../frontend/css/styles.css")
+  bucket       = aws_s3_bucket.frontend_bucket.bucket
+  key          = "css/styles.css"
+  source       = "${path.module}/../frontend/css/styles.css"
+  etag         = filemd5("${path.module}/../frontend/css/styles.css")
+  content_type = "text/css"
 }
 
 resource "aws_s3_object" "scripts_js" {
-  bucket = aws_s3_bucket.frontend_bucket.bucket
-  key    = "js/scripts.js"
-  source = "${path.module}/../frontend/js/scripts.js"
-  etag   = filemd5("${path.module}/../frontend/js/scripts.js")
+  bucket       = aws_s3_bucket.frontend_bucket.bucket
+  key          = "js/scripts.js"
+  source       = "${path.module}/../frontend/js/scripts.js"
+  etag         = filemd5("${path.module}/../frontend/js/scripts.js")
+  content_type = "application/javascript"
 }
 
 resource "aws_s3_object" "profile_image" {
-  bucket = aws_s3_bucket.frontend_bucket.bucket
-  key    = "images/profile.jpg"
-  source = "${path.module}/../frontend/images/profile.jpg"
-  etag   = filemd5("${path.module}/../frontend/images/profile.jpg")
+  bucket       = aws_s3_bucket.frontend_bucket.bucket
+  key          = "images/profile.jpg"
+  source       = "${path.module}/../frontend/images/profile.jpg"
+  etag         = filemd5("${path.module}/../frontend/images/profile.jpg")
+  content_type = "image/jpeg"
 }
 
 resource "aws_s3_bucket_policy" "frontend_bucket_policy" {
@@ -86,5 +90,5 @@ resource "aws_s3_bucket_public_access_block" "frontend_bucket_public_access_bloc
 }
 
 output "website_url" {
-  value = aws_s3_bucket.frontend_bucket.website_domain
+  value = "http://${aws_s3_bucket.frontend_bucket.bucket}.s3-website-${var.region_name}.amazonaws.com"
 }
