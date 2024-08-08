@@ -16,6 +16,7 @@ resource "aws_iam_role" "lambda_role" {
 	  }
 	]
   })
+
 }
 
 # Attach the AmazonDynamoDBFullAccess policy to the IAM role
@@ -47,12 +48,6 @@ resource "aws_lambda_function" "initialize_lambda" {
   runtime       = var.lambda_runtime
   role          = aws_iam_role.lambda_role.arn
 
-  # Pass the DynamoDB table name as an environment variable
-  environment {
-    variables = {
-      DYNAMODB_TABLE_NAME = aws_dynamodb_table.visitor_count_table.name
-    }
-  }
 
   # Ensure the Lambda function is created after the zip file and DynamoDB table
   depends_on = [

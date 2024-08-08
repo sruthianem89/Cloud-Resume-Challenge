@@ -9,3 +9,7 @@ output "lambda_function_url" {
 output "dynamodb_table_name" {
   value = aws_dynamodb_table.visitor_count_table.name
 }
+
+output "initialize_dynamodb_url" {
+  value = aws_lambda_function_url.initialize_lambda_url.function_url
+}

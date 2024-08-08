@@ -1,21 +1,22 @@
-import os
 import boto3
 import logging
 
-# DynamoDB connection details
-table_name = os.environ['DYNAMODB_TABLE_NAME']
-partition_key = "key"
-partition_key_value = "visitor_count"
-counter_attribute = "counter"
-
 # Initialize DynamoDB client
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table(table_name)
 
 def lambda_handler(event, context):
 	logging.info('AWS Lambda function processed a request.')
 
 	try:
+		# Extract table name from the event body
+		table_name = event['tableName']
+		partition_key = "key"
+		partition_key_value = "visitor_count"
+		counter_attribute = "counter"
+
+		# Get the DynamoDB table
+		table = dynamodb.Table(table_name)
+
 		# Retrieve the entity from the table
 		response = table.get_item(Key={partition_key: partition_key_value})
 		item = response.get('Item')
