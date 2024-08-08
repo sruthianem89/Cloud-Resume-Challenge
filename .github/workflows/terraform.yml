@@ -26,16 +26,20 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
     - name: Terraform Init
+      working-directory: ./terraform
       run: terraform init -upgrade
 
     - name: Terraform Refresh
+      working-directory: ./terraform
       run: terraform refresh
 
     - name: Terraform Apply
+      working-directory: ./terraform
       run: terraform apply -auto-approve
 
     - name: Extract Terraform Outputs
       id: extract_outputs
+      working-directory: ./terraform
       run: |
         dynamodb_table_name=$(terraform output -raw dynamodb_table_name | tr -d '\n')
         initialize_function_url=$(terraform output -raw initialize_dynamodb_url | tr -d '\n')
@@ -49,8 +53,8 @@ jobs:
 
     - name: Update scripts.js with dynamic parameters
       if: ${{ env.LAMBDA_FUNCTION_URL != '' && env.INITIALIZE_FUNCTION_URL != '' && env.DYNAMODB_TABLE_NAME != '' && env.BUCKET_NAME != '' }}
+      working-directory: ./js
       run: |
-        cd frontend/js
         # Update the scripts.js file
         sed -i "s|LAMBDA_FUNCTION_URL|${{ env.LAMBDA_FUNCTION_URL }}|g" scripts.js
         sed -i "s|INITIALIZE_FUNCTION_URL|${{ env.INITIALIZE_FUNCTION_URL }}|g" scripts.js
