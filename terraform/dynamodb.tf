@@ -15,6 +15,12 @@ resource "aws_dynamodb_table" "visitor_count_table" {
 	type = "N"
   }
 
+  global_secondary_index {
+    name            = "CounterIndex"
+    hash_key        = "counter"
+    projection_type = "ALL" 
+  }
+
   tags = {
 	Name = "visitor_count_table"
   }

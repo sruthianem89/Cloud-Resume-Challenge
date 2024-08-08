@@ -1,7 +1,34 @@
 #depends on dynamodb table creation
 
+# Create IAM role for Lambda with full access to Amazon DynamoDB
+resource "aws_iam_role" "lambda_role" {
+  name = "lambda_execution_role"
+
+  assume_role_policy = jsonencode({
+	Version = "2012-10-17"
+	Statement = [
+	  {
+		Action = "sts:AssumeRole"
+		Effect = "Allow"
+		Principal = {
+		  Service = "lambda.amazonaws.com"
+		}
+	  }
+	]
+  })
+}
+
+# Attach the AmazonDynamoDBFullAccess policy to the IAM role
+resource "aws_iam_role_policy_attachment" "lambda_dynamodb_policy" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+
+  # Ensure the policy attachment is created after the IAM role
+  depends_on = [aws_iam_role.lambda_role]
+}
+
 # Zip Lambda function code
-resource "null_resource" "zip_lambda_function_code" {
+resource "null_resource" "zip_initialize_dynamodb" {
   provisioner "local-exec" {
 	command = "cd ../backend && zip -r ../initialize_dynamodb.zip initialize_dynamodb.py"
   }
@@ -29,7 +56,7 @@ resource "aws_lambda_function" "initialize_lambda" {
 
   # Ensure the Lambda function is created after the zip file and DynamoDB table
   depends_on = [
-	null_resource.zip_lambda_function_code,
+	null_resource.zip_initialize_dynamodb,
 	aws_dynamodb_table.visitor_count_table
   ]
 }

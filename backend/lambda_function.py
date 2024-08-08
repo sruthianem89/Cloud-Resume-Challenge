@@ -1,8 +1,9 @@
+import os
 import boto3
 import logging
 
 # DynamoDB connection details
-table_name = "crcsrudb"
+table_name = os.environ['DYNAMODB_TABLE_NAME']
 partition_key = "key"
 partition_key_value = "visitor_count"
 counter_attribute = "counter"

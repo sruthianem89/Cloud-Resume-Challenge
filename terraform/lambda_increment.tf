@@ -1,43 +1,19 @@
 #lambda function creation for incrementing the counter
-#depends on dynamodb
-
-# Create IAM role for Lambda with full access to Amazon DynamoDB
-resource "aws_iam_role" "lambda_role" {
-  name = "lambda_execution_role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        }
-      }
-    ]
-  })
-}
-
-# Attach the AmazonDynamoDBFullAccess policy to the IAM role
-resource "aws_iam_role_policy_attachment" "lambda_dynamodb_policy" {
-  role       = aws_iam_role.lambda_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
-}
+#depends on dynamodb table creation & initialization of the table
 
 # Zip Lambda function code
 resource "null_resource" "zip_lambda_function_code" {
   provisioner "local-exec" {
-    command = "cd ../backend && zip -r ../lambda_function.zip lambda_function.py"
+	command = "cd ../backend && zip -r ../lambda_function.zip lambda_function.py"
   }
 
   # Ensure the zip is created before the Lambda function
   triggers = {
-    always_run = "${timestamp()}"
+	always_run = "${timestamp()}"
   }
 }
 
-# Define the Lambda function
+# Define the Lambda function for incrementing the counter
 resource "aws_lambda_function" "frontend_lambda" {
   function_name = var.lambda_name
   filename      = "${path.module}/../lambda_function.zip"
@@ -45,17 +21,27 @@ resource "aws_lambda_function" "frontend_lambda" {
   runtime       = var.lambda_runtime
   role          = aws_iam_role.lambda_role.arn
 
-  # Ensure the Lambda function is created after the zip file
-  depends_on = [null_resource.zip_lambda_function_code]
-}
+  # Pass the DynamoDB table name as an environment variable
+  environment {
+    variables = {
+      DYNAMODB_TABLE_NAME = aws_dynamodb_table.visitor_count_table.name
+    }
+  }
 
+  # Ensure the Lambda function is created after the zip file
+  depends_on = [
+	null_resource.zip_lambda_function_code]
+}
 
 # Enable function URL and CORS
 resource "aws_lambda_function_url" "frontend_lambda_url" {
-  function_name = aws_lambda_function.frontend_lambda.function_name
+  function_name      = aws_lambda_function.frontend_lambda.function_name
   authorization_type = "NONE"
 
   cors {
-    allow_origins = ["*"]
+	allow_origins = ["*"]
   }
+
+  # Ensure the function URL is created after the frontend_lambda function
+  depends_on = [aws_lambda_function.frontend_lambda]
 }

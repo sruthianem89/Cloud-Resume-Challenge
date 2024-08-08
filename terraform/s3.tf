@@ -3,7 +3,6 @@
 
 resource "aws_s3_bucket" "frontend_bucket" {
   bucket = var.bucket_name
-  depends_on = [aws_lambda_function.frontend_lambda]
 }
 
 resource "aws_s3_bucket_website_configuration" "frontend_bucket_website" {
@@ -16,8 +15,6 @@ resource "aws_s3_bucket_website_configuration" "frontend_bucket_website" {
   error_document {
 	key = "index.html"
   }
-
-  depends_on = [aws_lambda_function.frontend_lambda]
 }
 
 resource "aws_s3_object" "index_html" {
@@ -26,7 +23,6 @@ resource "aws_s3_object" "index_html" {
   source       = "${path.module}/../frontend/index.html"
   etag         = filemd5("${path.module}/../frontend/index.html")
   content_type = "text/html"
-  depends_on   = [aws_lambda_function.frontend_lambda]
 }
 
 resource "aws_s3_object" "styles_css" {
@@ -35,7 +31,6 @@ resource "aws_s3_object" "styles_css" {
   source       = "${path.module}/../frontend/css/styles.css"
   etag         = filemd5("${path.module}/../frontend/css/styles.css")
   content_type = "text/css"
-  depends_on   = [aws_lambda_function.frontend_lambda]
 }
 
 resource "aws_s3_object" "scripts_js" {
@@ -53,7 +48,6 @@ resource "aws_s3_object" "profile_image" {
   source       = "${path.module}/../frontend/images/profile.jpg"
   etag         = filemd5("${path.module}/../frontend/images/profile.jpg")
   content_type = "image/jpeg"
-  depends_on   = [aws_lambda_function.frontend_lambda]
 }
 
 resource "aws_s3_bucket_policy" "frontend_bucket_policy" {
@@ -70,8 +64,6 @@ resource "aws_s3_bucket_policy" "frontend_bucket_policy" {
 	  }
 	]
   })
-
-  depends_on = [aws_lambda_function.frontend_lambda]
 }
 
 resource "aws_s3_bucket_public_access_block" "frontend_bucket_public_access_block" {
@@ -80,6 +72,4 @@ resource "aws_s3_bucket_public_access_block" "frontend_bucket_public_access_bloc
   block_public_policy     = false
   ignore_public_acls      = false
   restrict_public_buckets = false
-
-  depends_on = [aws_lambda_function.frontend_lambda]
 }
