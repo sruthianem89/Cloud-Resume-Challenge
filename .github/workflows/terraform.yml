@@ -53,7 +53,7 @@ jobs:
 
     - name: Update scripts.js with dynamic parameters
       if: ${{ env.LAMBDA_FUNCTION_URL != '' && env.INITIALIZE_FUNCTION_URL != '' && env.DYNAMODB_TABLE_NAME != '' && env.BUCKET_NAME != '' }}
-      working-directory: .frontend/js
+      working-directory: ./frontend/js
       run: |
         # Update the scripts.js file
         sed -i "s|LAMBDA_FUNCTION_URL|${{ env.LAMBDA_FUNCTION_URL }}|g" scripts.js
