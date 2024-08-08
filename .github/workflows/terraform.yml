@@ -40,13 +40,9 @@ jobs:
     - name: Output Terraform JSON
       working-directory: ./terraform
       run: |
-        (terraform output -json) > terraform_output.json
+        terraform output -json > terraform_output.json 2>/dev/null
         ls -l
         cat terraform_output.json
-
-
-    - name: Install jq
-      run: sudo apt-get install -y jq
 
     - name: Extract Terraform Outputs
       id: extract_outputs
