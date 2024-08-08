@@ -37,6 +37,12 @@ jobs:
       working-directory: ./terraform
       run: terraform apply -auto-approve
 
+    - name: Debug Terraform Outputs
+      working-directory: ./terraform
+      run: |
+        terraform output -json
+        terraform output -json | jq . 
+
     - name: Extract Terraform Outputs
       id: extract_outputs
       working-directory: ./terraform
