@@ -41,11 +41,21 @@ jobs:
       working-directory: ./terraform
       run: |
         terraform output -json > terraform_output.json
-        # Remove any lines that do not start with '{' or '['
-        grep -E '^\{|\[' terraform_output.json > filtered_terraform_output.json
+        sed -i '1d' terraform_output.json
+        # Filter out non-JSON lines
+        jq . terraform_output.json > filtered_terraform_output.json
         ls -l
         cat filtered_terraform_output.json
-        
+
+
+    - name: Upload Terraform Output Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+          name: terraform-outputs
+          path: |
+            ./terraform/terraform_output.json
+            ./terraform/filtered_terraform_output.json
+
     - name: Extract Terraform Outputs
       id: extract_outputs
       working-directory: ./terraform
