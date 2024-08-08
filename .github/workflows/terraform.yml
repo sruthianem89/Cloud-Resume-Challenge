@@ -69,7 +69,7 @@ jobs:
     - name: Upload updated scripts.js to S3
       if: ${{ env.LAMBDA_FUNCTION_URL && env.INITIALIZE_FUNCTION_URL && env.DYNAMODB_TABLE_NAME && env.BUCKET_NAME }}
       run: |
-          aws s3 cp frontend/js/scripts.js s3://${{ env.BUCKET_NAME }}/js/scripts.js
+          aws s3 cp frontend/js/scripts.js s3://${BUCKET_NAME}/js/scripts.js
       env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
