@@ -40,7 +40,7 @@ jobs:
     - name: Output Terraform JSON
       working-directory: ./terraform
       run: |
-        terraform output -json > terraform_output.json
+        (terraform output -json) > terraform_output.json
         ls -l
         cat terraform_output.json
 
