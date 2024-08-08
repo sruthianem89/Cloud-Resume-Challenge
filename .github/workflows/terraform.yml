@@ -65,16 +65,23 @@ jobs:
         DYNAMODB_TABLE_NAME: ${{ env.DYNAMODB_TABLE_NAME }}
         BUCKET_NAME: ${{ env.BUCKET_NAME }}
 
+    - name: Debug Environment Variables
+      run: |
+          echo "BUCKET_NAME=${{ env.BUCKET_NAME }}"
+          echo "LAMBDA_FUNCTION_URL=${{ env.LAMBDA_FUNCTION_URL }}"
+          echo "INITIALIZE_FUNCTION_URL=${{ env.INITIALIZE_FUNCTION_URL }}"
+          echo "DYNAMODB_TABLE_NAME=${{ env.DYNAMODB_TABLE_NAME }}"
+      env:
+          LAMBDA_FUNCTION_URL: ${{ env.LAMBDA_FUNCTION_URL }}
+          INITIALIZE_FUNCTION_URL: ${{ env.INITIALIZE_FUNCTION_URL }}
+          DYNAMODB_TABLE_NAME: ${{ env.DYNAMODB_TABLE_NAME }}
+          BUCKET_NAME: ${{ env.BUCKET_NAME }}
+
     - name: Upload updated scripts.js to S3
       if: ${{ env.LAMBDA_FUNCTION_URL && env.INITIALIZE_FUNCTION_URL && env.DYNAMODB_TABLE_NAME && env.BUCKET_NAME }}
       run: |
-          echo "BUCKET_NAME is $BUCKET_NAME"
-          echo "Bucket Name: ${{ env.BUCKET_NAME }}"
-          aws s3 cp frontend/js/scripts.js s3://${BUCKET_NAME}/js/scripts.js
+          aws s3 cp frontend/js/scripts.js s3://${{ env.BUCKET_NAME }}/js/scripts.js
       env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
           LAMBDA_FUNCTION_URL: ${{ env.LAMBDA_FUNCTION_URL }}
           INITIALIZE_FUNCTION_URL: ${{ env.INITIALIZE_FUNCTION_URL }}
           DYNAMODB_TABLE_NAME: ${{ env.DYNAMODB_TABLE_NAME }}
