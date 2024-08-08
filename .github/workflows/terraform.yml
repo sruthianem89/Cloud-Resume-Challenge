@@ -41,13 +41,18 @@ jobs:
     - name: Extract Terraform Outputs
       id: extract_outputs
       run: |
-        dynamodb_table_name=$(terraform output -raw dynamodb_table_name)
-        initialize_function_url=$(terraform output -raw initialize_dynamodb_url)
-        lambda_function_url=$(terraform output -raw lambda_function_url)
+        dynamodb_table_name=$(terraform output -raw dynamodb_table_name | tr -d '\n')
+        initialize_function_url=$(terraform output -raw initialize_dynamodb_url | tr -d '\n')
+        lambda_function_url=$(terraform output -raw lambda_function_url | tr -d '\n')
 
-        echo "DYNAMODB_TABLE_NAME=$dynamodb_table_name" >> $GITHUB_ENV
-        echo "INITIALIZE_FUNCTION_URL=$initialize_function_url" >> $GITHUB_ENV
-        echo "LAMBDA_FUNCTION_URL=$lambda_function_url" >> $GITHUB_ENV
+        echo "Debug: DYNAMODB_TABLE_NAME=${dynamodb_table_name}"
+        echo "Debug: INITIALIZE_FUNCTION_URL=${initialize_function_url}"
+        echo "Debug: LAMBDA_FUNCTION_URL=${lambda_function_url}"
+
+        echo "DYNAMODB_TABLE_NAME=${dynamodb_table_name}" >> $GITHUB_ENV
+        echo "INITIALIZE_FUNCTION_URL=${initialize_function_url}" >> $GITHUB_ENV
+        echo "LAMBDA_FUNCTION_URL=${lambda_function_url}" >> $GITHUB_ENV
+
 
     - name: Update scripts.js with dynamic parameters
       run: |
