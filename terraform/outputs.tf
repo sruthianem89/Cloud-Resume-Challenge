@@ -5,3 +5,7 @@ output "website_url" {
 output "lambda_function_url" {
   value = aws_lambda_function_url.frontend_lambda_url.function_url
 }
+
+output "dynamodb_table_name" {
+  value = aws_dynamodb_table.visitor_count_table.name
+}

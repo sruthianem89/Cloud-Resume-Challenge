@@ -1,5 +1,5 @@
-
-#lambda function creation
+#lambda function creation for incrementing the counter
+#depends on dynamodb
 
 # Create IAM role for Lambda with full access to Amazon DynamoDB
 resource "aws_iam_role" "lambda_role" {
@@ -28,7 +28,7 @@ resource "aws_iam_role_policy_attachment" "lambda_dynamodb_policy" {
 # Zip Lambda function code
 resource "null_resource" "zip_lambda_function_code" {
   provisioner "local-exec" {
-    command = "cd ../backend && zip -r ../lambda_function.zip ."
+    command = "cd ../backend && zip -r ../lambda_function.zip lambda_function.py"
   }
 
   # Ensure the zip is created before the Lambda function

@@ -14,7 +14,18 @@ variable "lambda_name" {
   type        = string
 }
 
+variable "lambda_initialize_dynamodb_name" {
+  description = "The name of the lambda function that initializes the dynamodb table"
+  type        = string
+}
+
+variable "dynamodb_name" {
+  description = "This is the name of the dynamodb table"
+  type        = string
+}
+
 variable "lambda_runtime" {
   description = "This is the lambda runtime environment"
   type        = string
 }
+
