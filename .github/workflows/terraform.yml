@@ -59,7 +59,6 @@ jobs:
         sed -i "s|LAMBDA_FUNCTION_URL|${{ env.LAMBDA_FUNCTION_URL }}|g" scripts.js
         sed -i "s|INITIALIZE_FUNCTION_URL|${{ env.INITIALIZE_FUNCTION_URL }}|g" scripts.js
         sed -i "s|DYNAMODB_TABLE_NAME|${{ env.DYNAMODB_TABLE_NAME }}|g" scripts.js
-        sed -i "s|BUCKET_NAME|${{ env.BUCKET_NAME }}|g" scripts.js
       env:
         LAMBDA_FUNCTION_URL: ${{ env.LAMBDA_FUNCTION_URL }}
         INITIALIZE_FUNCTION_URL: ${{ env.INITIALIZE_FUNCTION_URL }}
@@ -69,6 +68,8 @@ jobs:
     - name: Upload updated scripts.js to S3
       if: ${{ env.LAMBDA_FUNCTION_URL && env.INITIALIZE_FUNCTION_URL && env.DYNAMODB_TABLE_NAME && env.BUCKET_NAME }}
       run: |
+          echo "BUCKET_NAME is $BUCKET_NAME"
+          echo "Bucket Name: ${{ env.BUCKET_NAME }}"
           aws s3 cp frontend/js/scripts.js s3://${BUCKET_NAME}/js/scripts.js
       env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
