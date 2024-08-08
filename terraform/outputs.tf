@@ -13,3 +13,7 @@ output "dynamodb_table_name" {
 output "initialize_dynamodb_url" {
   value = aws_lambda_function_url.initialize_lambda_url.function_url
 }
+
+output "bucket_name" {
+  value = aws_s3_bucket.frontend_bucket.bucket
+}

@@ -29,3 +29,7 @@ variable "lambda_runtime" {
   type        = string
 }
 
+variable "state_name" {
+  description = "The name of the terraform state file"
+  type        = string
+}
