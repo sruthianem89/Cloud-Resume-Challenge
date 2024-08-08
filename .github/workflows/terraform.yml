@@ -41,10 +41,10 @@ jobs:
       id: extract_outputs
       working-directory: ./terraform
       run: |
-        dynamodb_table_name=$(terraform output -raw dynamodb_table_name | awk 'NR==1{print $1}')
-        initialize_function_url=$(terraform output -raw initialize_dynamodb_url | awk 'NR==1{print $1}')
-        lambda_function_url=$(terraform output -raw lambda_function_url | awk 'NR==1{print $1}')
-        bucket_name=$(terraform output -raw bucket_name | awk 'NR==1{print $1}')
+        dynamodb_table_name=$(terraform output -json | jq -r '.dynamodb_table_name.value')
+        initialize_function_url=$(terraform output -json | jq -r '.initialize_dynamodb_url.value')
+        lambda_function_url=$(terraform output -json | jq -r '.lambda_function_url.value')
+        bucket_name=$(terraform output -json | jq -r '.bucket_name.value')
         
         echo "DYNAMODB_TABLE_NAME=$dynamodb_table_name" >> $GITHUB_ENV
         echo "INITIALIZE_FUNCTION_URL=$initialize_function_url" >> $GITHUB_ENV
