@@ -46,7 +46,7 @@ resource "aws_lambda_function" "initialize_lambda" {
   function_name = var.lambda_initialize_dynamodb_name
   filename      = "../terraform/initialize_dynamodb.zip"
   handler       = "initialize_dynamodb.lambda_handler"
-  source_code_hash = filebase64sha256("../terraform/initialize_dynamodb.zip")
+  #source_code_hash = filebase64sha256("../terraform/initialize_dynamodb.zip")
   runtime       = var.lambda_runtime
   role          = aws_iam_role.lambda_role.arn
 
