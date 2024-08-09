@@ -7,7 +7,7 @@ def lambda_handler(event, context):
     # Initialize response headers for CORS here for reuse purpose:
     headers = {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type'
     }
     

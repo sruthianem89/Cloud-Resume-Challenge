@@ -32,7 +32,7 @@ resource "aws_lambda_function_url" "frontend_lambda_url" {
 
   cors {
 	allow_origins = ["*"]
-  allow_methods = ["*"] 
+  allow_methods = ["GET", "POST", "OPTIONS"]
   allow_headers = ["Content-Type"]            # Include Content-Type
   }
 

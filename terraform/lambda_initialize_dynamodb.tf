@@ -63,7 +63,7 @@ resource "aws_lambda_function_url" "initialize_lambda_url" {
 
   cors {
 	allow_origins = ["*"]
-  allow_methods = ["*"] 
+  allow_methods = ["GET", "POST", "OPTIONS"]  # Include all methods
   allow_headers = ["Content-Type"]            # Include Content-Type
   }
 
