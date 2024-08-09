@@ -37,7 +37,7 @@ resource "null_resource" "zip_initialize_dynamodb" {
   # Ensure the zip is created before the Lambda function
   triggers = {
 	always_run = "${timestamp()}"
-  file_version = "${filehash("../backend/initialize_dynamodb.py")}"
+  file_version = "${md5(file("../backend/initialize_dynamodb.py"))}"
   }
 }
 
