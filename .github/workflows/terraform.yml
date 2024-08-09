@@ -29,6 +29,17 @@ jobs:
       working-directory: ./terraform
       run: terraform init -upgrade
 
+    - name: Install zip
+      run: sudo apt-get install zip -y
+    
+    - name: Create Lambda Zip File
+      working-directory: ./backend
+      run: zip -r ../terraform/initialize_dynamodb.zip initialize_dynamodb.py
+
+    - name: Create Lambda Zip File
+      working-directory: ./backend
+      run: zip -r ../terraform/initialize_dynamodb.zip lambda_dynamodb.py
+    
     - name: Terraform Refresh
       working-directory: ./terraform
       run: terraform refresh

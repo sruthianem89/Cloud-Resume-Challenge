@@ -1,7 +1,7 @@
 # Zip Lambda function code
 resource "null_resource" "zip_lambda_function_code" {
   provisioner "local-exec" {
-	command = "cd ../backend && zip -r ../terraform/lambda_function.zip lambda_function.py"
+	command = "cd ../backend && rm -f ../terraform/lambda_function.zip && zip -r ../terraform/lambda_function.zip initialize_dynamodb.py"
   }
 
   # Ensure the zip is created before the Lambda function
@@ -17,7 +17,7 @@ resource "aws_lambda_function" "frontend_lambda" {
   handler       = "lambda_function.lambda_handler"
   runtime       = var.lambda_runtime
   role          = aws_iam_role.lambda_role.arn
-  #source_code_hash = filebase64sha256("../terraform/lambda_function.zip")
+  source_code_hash = filebase64sha256("../terraform/lambda_function.zip")
 
   # Ensure the Lambda function is created after the zip file
   depends_on = [
