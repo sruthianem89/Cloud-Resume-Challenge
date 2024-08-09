@@ -5,9 +5,9 @@ resource "null_resource" "zip_lambda_function_code" {
   }
 
   # Ensure the zip is created before the Lambda function
-  triggers = {
-	always_run = "${timestamp()}"
-  }
+#  triggers = {
+#	always_run = "${timestamp()}"
+#  }
 }
 
 # Define the Lambda function for incrementing the counter
