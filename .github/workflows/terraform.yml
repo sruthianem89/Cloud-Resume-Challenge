@@ -37,12 +37,21 @@ jobs:
       working-directory: ./terraform
       run: terraform apply -auto-approve
 
+    - name: Check Terraform version
+      run: terraform version
+    
     - name: Output Terraform JSON
       working-directory: ./terraform
       run: |
-        terraform output -json > terraform_output.json
-        # Filter out non-JSON lines
-        jq . terraform_output.json > filtered_terraform_output.json
+        terraform output -json > filtered_terraform_output.json
+
+    - name: Commit and Push JSON Files
+      run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add filtered_terraform_output.json
+          git commit -m "Add Terraform output JSON file"
+          git push
 
     - name: Extract Terraform Outputs
       id: extract_outputs
