@@ -44,7 +44,7 @@ resource "null_resource" "zip_initialize_dynamodb" {
 # Define the Lambda function
 resource "aws_lambda_function" "initialize_lambda" {
   function_name = var.lambda_initialize_dynamodb_name
-  filename      = "${path.module}/../initialize_dynamodb.zip"
+  filename      = "../initialize_dynamodb.zip"
   handler       = "initialize_dynamodb.lambda_handler"
   runtime       = var.lambda_runtime
   role          = aws_iam_role.lambda_role.arn

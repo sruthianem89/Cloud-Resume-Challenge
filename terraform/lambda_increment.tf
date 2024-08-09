@@ -13,7 +13,7 @@ resource "null_resource" "zip_lambda_function_code" {
 # Define the Lambda function for incrementing the counter
 resource "aws_lambda_function" "frontend_lambda" {
   function_name = var.lambda_name
-  filename      = "${path.module}/../lambda_function.zip"
+  filename      = "../lambda_function.zip"
   handler       = "lambda_function.lambda_handler"
   runtime       = var.lambda_runtime
   role          = aws_iam_role.lambda_role.arn
