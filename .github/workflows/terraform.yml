@@ -46,6 +46,7 @@ jobs:
         terraform output -json > terraform_output.json      
 
     - name: Clean Up Terraform Output JSON
+      working directory: ./terraform  
       run: |
           sed '/^::/d' terraform_output.json | sed '1d' > filtered_terraform_output.json
 
