@@ -46,6 +46,7 @@ jobs:
         terraform output -json > filtered_terraform_output.json
 
     - name: Commit and Push JSON Files
+      working-directory: ./terraform
       run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
@@ -61,10 +62,11 @@ jobs:
             echo "filtered_terraform_output.json exists and its contents are:"
             cat filtered_terraform_output.json
           
-            dynamodb_table_name=$(jq -r '.dynamodb_table_name.value' filtered_terraform_output.json)
-            initialize_function_url=$(jq -r '.initialize_dynamodb_url.value' filtered_terraform_output.json)
-            lambda_function_url=$(jq -r '.lambda_function_url.value' filtered_terraform_output.json)
-            bucket_name=$(jq -r '.bucket_name.value' filtered_terraform_output.json)
+            dynamodb_table_name=$(python3 -c "import json; import sys; print(json.load(sys.stdin)['dynamodb_table_name']['value'])" < filtered_terraform_output.json)
+            initialize_function_url=$(python3 -c "import json; import sys; print(json.load(sys.stdin)['initialize_dynamodb_url']['value'])" < filtered_terraform_output.json)
+            lambda_function_url=$(python3 -c "import json; import sys; print(json.load(sys.stdin)['lambda_function_url']['value'])" < filtered_terraform_output.json)
+            bucket_name=$(python3 -c "import json; import sys; print(json.load(sys.stdin)['bucket_name']['value'])" < filtered_terraform_output.json)
+
             
             echo "DYNAMODB_TABLE_NAME=$dynamodb_table_name"
             echo "INITIALIZE_FUNCTION_URL=$initialize_function_url"
