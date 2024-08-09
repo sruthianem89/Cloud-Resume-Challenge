@@ -39,19 +39,15 @@ window.addEventListener('DOMContentLoaded', event => {
 		},
 		body: JSON.stringify({ tableName: "DYNAMODB_TABLE_NAME" })
 	})
-	.then(response => response.text())
-	.then(data => {
-		console.log('DynamoDB initialization response:', data);
-
+	.finally(() => {
 		// Fetch count value from Lambda Function and update the page
-		return fetch('LAMBDA_FUNCTION_URL', {
+		fetch('LAMBDA_FUNCTION_URL', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ tableName: "DYNAMODB_TABLE_NAME"})
-		});
-	})
+			body: JSON.stringify({ tableName: "DYNAMODB_TABLE_NAME" })
+		})
 	.then(response => {
 		if (!response.ok) {
 			throw new Error('Network response was not ok');

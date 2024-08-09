@@ -11,13 +11,6 @@ def lambda_handler(event, context):
         body = json.loads(event['body'])
         table_name = body.get('tableName')
         
-        if not table_name:
-            return {
-                'statusCode': 400,
-                'headers': headers,
-                'body': json.dumps('Table name is required')
-            }
-        
         table = dynamodb.Table(table_name)
     
         # Check if the counter exists
@@ -33,12 +26,10 @@ def lambda_handler(event, context):
         
         return {
             'statusCode': 200,
-            'headers': headers,
             'body': json.dumps('Initialization complete')
         }
     
     return {
         'statusCode': 400,
-        'headers': headers,
         'body': json.dumps('Invalid request')
     }
