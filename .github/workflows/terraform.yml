@@ -41,20 +41,8 @@ jobs:
       working-directory: ./terraform
       run: |
         terraform output -json > terraform_output.json
-        sed -i '1d' terraform_output.json
         # Filter out non-JSON lines
         jq . terraform_output.json > filtered_terraform_output.json
-        ls -l
-        cat filtered_terraform_output.json
-
-
-    - name: Upload Terraform Output Artifacts
-      uses: actions/upload-artifact@v3
-      with:
-          name: terraform-outputs
-          path: |
-            ./terraform/terraform_output.json
-            ./terraform/filtered_terraform_output.json
 
     - name: Extract Terraform Outputs
       id: extract_outputs
@@ -83,10 +71,34 @@ jobs:
             exit 1
           fi
 
+    - name: Escape special characters
+      run: |
+            escape_sed() {
+              echo "$1" | sed 's/[&/\]/\\&/g'
+            }
+
+            lambda_function_url=$(escape_sed "${{ env.LAMBDA_FUNCTION_URL }}")
+            initialize_function_url=$(escape_sed "${{ env.INITIALIZE_FUNCTION_URL }}")
+            dynamodb_table_name=$(escape_sed "${{ env.DYNAMODB_TABLE_NAME }}")
+            bucket_name=$(escape_sed "${{ env.BUCKET_NAME }}")
+            
+            echo "lambda_function_url=$lambda_function_url" >> $GITHUB_ENV
+            echo "initialize_function_url=$initialize_function_url" >> $GITHUB_ENV
+            echo "dynamodb_table_name=$dynamodb_table_name" >> $GITHUB_ENV
+            echo "bucket_name=$bucket_name" >> $GITHUB_ENV
+
+      env:
+        LAMBDA_FUNCTION_URL: ${{ env.LAMBDA_FUNCTION_URL }}
+        INITIALIZE_FUNCTION_URL: ${{ env.INITIALIZE_FUNCTION_URL }}
+        DYNAMODB_TABLE_NAME: ${{ env.DYNAMODB_TABLE_NAME }}
+        BUCKET_NAME: ${{ env.BUCKET_NAME }}
+
     - name: Update scripts.js with dynamic parameters
       if: ${{ env.LAMBDA_FUNCTION_URL != '' && env.INITIALIZE_FUNCTION_URL != '' && env.DYNAMODB_TABLE_NAME != '' && env.BUCKET_NAME != '' }}
       working-directory: ./frontend/js
       run: |
+        
+        
         # Update the scripts.js file
         sed -i "s|LAMBDA_FUNCTION_URL|${{ env.LAMBDA_FUNCTION_URL }}|g" scripts.js
         sed -i "s|INITIALIZE_FUNCTION_URL|${{ env.INITIALIZE_FUNCTION_URL }}|g" scripts.js

@@ -32,24 +32,24 @@ window.addEventListener('DOMContentLoaded', event => {
 	});
 
 	// Initialize DynamoDB table by calling Lambda Function URL with the table name
-	fetch('${INITIALIZE_FUNCTION_URL}', {
+	fetch('INITIALIZE_FUNCTION_URL', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ tableName: `${DYNAMODB_TABLE_NAME}` })
+		body: JSON.stringify({ tableName: DYNAMODB_TABLE_NAME })
 	})
 	.then(response => response.text())
 	.then(data => {
 		console.log('DynamoDB initialization response:', data);
 
 		// Fetch count value from Lambda Function and update the page
-		return fetch('${LAMBDA_FUNCTION_URL}', {
+		return fetch('LAMBDA_FUNCTION_URL', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ tableName: `${DYNAMODB_TABLE_NAME}` })
+			body: JSON.stringify({ tableName: DYNAMODB_TABLE_NAME})
 		});
 	})
 	.then(response => {
