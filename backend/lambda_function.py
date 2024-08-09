@@ -6,7 +6,8 @@ dynamodb = boto3.resource('dynamodb')
 
 def lambda_handler(event, context):
 	logging.info('AWS Lambda function processed a request.')
-
+	
+	#added CORS headers
 	headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': '*',
