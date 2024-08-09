@@ -1,27 +1,23 @@
 # Zip Lambda function code
-resource "null_resource" "zip_lambda_function_code" {
-  provisioner "local-exec" {
-	command = "cd ../backend && rm -f ../terraform/lambda_function.zip && zip -r ../terraform/lambda_function.zip initialize_dynamodb.py"
-  }
-
-  # Ensure the zip is created before the Lambda function
-#  triggers = {
-#	always_run = "${timestamp()}"
-#  }
+data "archive_file" "zip_lambda_function" {
+  type        = "zip"
+  source_file = "../backend/lambda_function.py"
+  output_path = "../terraform/lambda_function.zip"
 }
 
-# Define the Lambda function for incrementing the counter
-resource "aws_lambda_function" "frontend_lambda" {
+
+# Define the Lambda function
+resource "aws_lambda_function" "initialize_lambda" {
   function_name = var.lambda_name
-  filename      = "../terraform/lambda_function.zip"
+  filename      = data.archive_file.zip_lambda_function.output_path
   handler       = "lambda_function.lambda_handler"
+  source_code_hash = data.archive_file.zip_lambda_function.output_base64sha256
   runtime       = var.lambda_runtime
   role          = aws_iam_role.lambda_role.arn
-  source_code_hash = filebase64sha256("../terraform/lambda_function.zip")
 
   # Ensure the Lambda function is created after the zip file
   depends_on = [
-	null_resource.zip_lambda_function_code
+	data.archive_file.zip_lambda_function
   ]
 }
 

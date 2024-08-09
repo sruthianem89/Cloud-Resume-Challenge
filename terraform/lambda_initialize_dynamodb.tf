@@ -29,31 +29,27 @@ resource "aws_iam_role_policy_attachment" "lambda_dynamodb_policy" {
 }
 
 # Zip Lambda function code
-resource "null_resource" "zip_initialize_dynamodb" {
-  provisioner "local-exec" {
-	command = "cd ../backend && rm -f ../terraform/initialize_dynamodb.zip && zip -r ../terraform/initialize_dynamodb.zip initialize_dynamodb.py"
-  }
-
-  # Ensure the zip is created before the Lambda function
-  #triggers = {
-	#always_run = "${timestamp()}"
-  #file_version = "${md5(file("../backend/initialize_dynamodb.py"))}"
-  #}
+data "archive_file" "zip_initialize_dynamodb" {
+  type        = "zip"
+  source_file = "../backend/initialize_dynamodb.py"
+  output_path = "../terraform/initialize_dynamodb.zip"
 }
+
 
 # Define the Lambda function
 resource "aws_lambda_function" "initialize_lambda" {
   function_name = var.lambda_initialize_dynamodb_name
-  filename      = "../terraform/initialize_dynamodb.zip"
+  filename      = data.archive_file.zip_initialize_dynamodb.output_path
   handler       = "initialize_dynamodb.lambda_handler"
-  source_code_hash = filebase64sha256("../terraform/initialize_dynamodb.zip")
+  source_code_hash = data.archive_file.zip_initialize_dynamodb.output_base64sha256
   runtime       = var.lambda_runtime
   role          = aws_iam_role.lambda_role.arn
 
 
   # Ensure the Lambda function is created after the zip file
   depends_on = [
-	null_resource.zip_initialize_dynamodb]
+	data.archive_file.zip_initialize_dynamodb
+  ]
 }
 
 # Enable function URL and CORS
