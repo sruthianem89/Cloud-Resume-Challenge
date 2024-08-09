@@ -49,15 +49,6 @@ jobs:
       working-directory: ./terraform  
       run: |
           sed '/^::/d' terraform_output.json | sed '1d' > filtered_terraform_output.json
-
-    - name: Commit and Push JSON Files
-      working-directory: ./terraform
-      run: |
-            git config --global user.name "GitHub Actions"
-            git config --global user.email "actions@github.com"
-            git add filtered_terraform_output.json terraform_output.json
-            git commit -m "Add Terraform output JSON file"
-            git push 
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}      
 

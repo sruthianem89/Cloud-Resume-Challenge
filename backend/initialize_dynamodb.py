@@ -4,7 +4,7 @@ import boto3
 dynamodb = boto3.resource('dynamodb')
 
 def lambda_handler(event, context):
-    # Initialize response headers for CORS:
+    # Initialize response headers for CORS changes:
     headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
