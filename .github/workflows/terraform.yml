@@ -52,7 +52,10 @@ jobs:
           git config --global user.email "actions@github.com"
           git add filtered_terraform_output.json
           git commit -m "Add Terraform output JSON file"
-          git push
+          git push https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/sruthianem89/Cloud-Resume-Challenge.git
+      env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      
 
     - name: Extract Terraform Outputs
       id: extract_outputs
