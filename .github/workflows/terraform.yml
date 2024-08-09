@@ -65,7 +65,7 @@ jobs:
       working-directory: ./terraform
       run: |
           if [ -f filtered_terraform_output.json ]; then
-            echo "filtered_terraform_output.json exists and its contents are below:"
+            echo "filtered_terraform_output.json exists and its contents:"
             cat filtered_terraform_output.json
           
             dynamodb_table_name=$(python3 -c "import json; import sys; print(json.load(sys.stdin)['dynamodb_table_name']['value'])" < filtered_terraform_output.json)
