@@ -37,7 +37,7 @@ window.addEventListener('DOMContentLoaded', event => {
 		headers: {
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ tableName: DYNAMODB_TABLE_NAME })
+		body: JSON.stringify({ tableName: "DYNAMODB_TABLE_NAME" })
 	})
 	.then(response => response.text())
 	.then(data => {
@@ -49,7 +49,7 @@ window.addEventListener('DOMContentLoaded', event => {
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ tableName: DYNAMODB_TABLE_NAME})
+			body: JSON.stringify({ tableName: "DYNAMODB_TABLE_NAME"})
 		});
 	})
 	.then(response => {
