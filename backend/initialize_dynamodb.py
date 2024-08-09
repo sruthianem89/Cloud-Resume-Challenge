@@ -4,6 +4,13 @@ import boto3
 dynamodb = boto3.resource('dynamodb')
 
 def lambda_handler(event, context):
+    # Initialize response headers for CORS
+    headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'OPTIONS,POST,GET',
+        'Access-Control-Allow-Headers': 'Content-Type'
+    }
+    
     # Check if the event has a body
     if 'body' in event:
         body = json.loads(event['body'])
@@ -12,6 +19,7 @@ def lambda_handler(event, context):
         if not table_name:
             return {
                 'statusCode': 400,
+                'headers': headers,
                 'body': json.dumps('Table name is required')
             }
         
@@ -30,10 +38,12 @@ def lambda_handler(event, context):
         
         return {
             'statusCode': 200,
+            'headers': headers,
             'body': json.dumps('Initialization complete')
         }
     
     return {
         'statusCode': 400,
+        'headers': headers,
         'body': json.dumps('Invalid request')
     }
