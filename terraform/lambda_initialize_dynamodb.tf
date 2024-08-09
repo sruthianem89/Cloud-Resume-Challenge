@@ -37,6 +37,7 @@ resource "null_resource" "zip_initialize_dynamodb" {
   # Ensure the zip is created before the Lambda function
   triggers = {
 	always_run = "${timestamp()}"
+  file_version = "${filehash("../backend/initialize_dynamodb.py")}"
   }
 }
 
@@ -49,11 +50,9 @@ resource "aws_lambda_function" "initialize_lambda" {
   role          = aws_iam_role.lambda_role.arn
 
 
-  # Ensure the Lambda function is created after the zip file and DynamoDB table
+  # Ensure the Lambda function is created after the zip file
   depends_on = [
-	null_resource.zip_initialize_dynamodb,
-	aws_dynamodb_table.visitor_count_table
-  ]
+	null_resource.zip_initialize_dynamodb]
 }
 
 # Enable function URL and CORS
