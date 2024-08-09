@@ -1,4 +1,4 @@
-[command]/home/runner/work/_temp/3c9ec893-a6c7-4708-b514-9a784801ecfd/terraform-bin output -json
+[command]/home/runner/work/_temp/6f633e98-4f97-488d-8725-bfac24e9df70/terraform-bin output -json
 {
   "bucket_name": {
     "sensitive": false,
