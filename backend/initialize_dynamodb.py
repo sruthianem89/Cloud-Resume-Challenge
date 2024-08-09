@@ -5,12 +5,7 @@ dynamodb = boto3.resource('dynamodb')
 
 def lambda_handler(event, context):
     # Initialize response headers for CORS here for reuse purpose:
-    headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type'
-    }
-    
+
     # Check if the event has a body
     if 'body' in event:
         body = json.loads(event['body'])

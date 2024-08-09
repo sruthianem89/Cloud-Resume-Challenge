@@ -7,12 +7,6 @@ dynamodb = boto3.resource('dynamodb')
 def lambda_handler(event, context):
 	logging.info('AWS Lambda function processed a request.')
 	
-	#added CORS headers
-	headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type'
-    }
 
 	try:
 		# Extract table name from the event body
