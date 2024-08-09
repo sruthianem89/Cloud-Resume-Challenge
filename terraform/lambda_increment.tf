@@ -17,7 +17,7 @@ resource "aws_lambda_function" "frontend_lambda" {
   handler       = "lambda_function.lambda_handler"
   runtime       = var.lambda_runtime
   role          = aws_iam_role.lambda_role.arn
-  #source_code_hash = filebase64sha256("../terraform/lambda_function.zip")
+  source_code_hash = filebase64sha256("../terraform/lambda_function.zip")
 
   # Ensure the Lambda function is created after the zip file
   depends_on = [
