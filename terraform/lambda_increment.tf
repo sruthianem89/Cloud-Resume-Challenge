@@ -7,7 +7,7 @@ data "archive_file" "zip_lambda_function" {
 
 
 # Define the Lambda function
-resource "aws_lambda_function" "initialize_lambda" {
+resource "aws_lambda_function" "frontend_lambda" {
   function_name = var.lambda_name
   filename      = data.archive_file.zip_lambda_function.output_path
   handler       = "lambda_function.lambda_handler"
