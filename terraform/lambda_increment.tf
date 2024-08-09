@@ -32,6 +32,7 @@ resource "aws_lambda_function_url" "frontend_lambda_url" {
   cors {
 	allow_origins = ["*"]
   allow_methods = ["*"] 
+  allow_headers = ["Content-Type"]            # Include Content-Type
   }
 
   # Ensure the function URL is created after the frontend_lambda function
