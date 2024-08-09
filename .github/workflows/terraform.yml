@@ -41,12 +41,12 @@ jobs:
       run: terraform version
     
     - name: Output Terraform JSON
-      working directory: ./terraform
+      working-directory: ./terraform
       run: |
         terraform output -json > terraform_output.json      
 
     - name: Clean Up Terraform Output JSON
-      working directory: ./terraform  
+      working-directory: ./terraform  
       run: |
           sed '/^::/d' terraform_output.json | sed '1d' > filtered_terraform_output.json
 
