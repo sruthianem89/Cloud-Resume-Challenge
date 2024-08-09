@@ -41,7 +41,7 @@ jobs:
       run: terraform version
     
     - name: Output Terraform JSON
-      working-directory: ./terraform
+      working directory: ./terraform
       run: |
         terraform output -json > terraform_output.json      
 
