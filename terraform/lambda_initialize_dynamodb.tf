@@ -31,7 +31,7 @@ resource "aws_iam_role_policy_attachment" "lambda_dynamodb_policy" {
 # Zip Lambda function code
 resource "null_resource" "zip_initialize_dynamodb" {
   provisioner "local-exec" {
-	command = "cd ../backend && zip -r ../initialize_dynamodb.zip initialize_dynamodb.py"
+	command = "cd ../backend && zip -r ../terraform/initialize_dynamodb.zip initialize_dynamodb.py"
   }
 
   # Ensure the zip is created before the Lambda function
@@ -44,8 +44,9 @@ resource "null_resource" "zip_initialize_dynamodb" {
 # Define the Lambda function
 resource "aws_lambda_function" "initialize_lambda" {
   function_name = var.lambda_initialize_dynamodb_name
-  filename      = "../initialize_dynamodb.zip"
+  filename      = "../terraform/initialize_dynamodb.zip"
   handler       = "initialize_dynamodb.lambda_handler"
+  source_code_hash = filebase64sha256("${path.module}/initialize_dynamodb.zip")
   runtime       = var.lambda_runtime
   role          = aws_iam_role.lambda_role.arn
 

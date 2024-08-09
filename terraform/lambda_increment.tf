@@ -1,7 +1,7 @@
 # Zip Lambda function code
 resource "null_resource" "zip_lambda_function_code" {
   provisioner "local-exec" {
-	command = "cd ../backend && zip -r ../lambda_function.zip lambda_function.py"
+	command = "cd ../backend && zip -r ../terraform/lambda_function.zip lambda_function.py"
   }
 
   # Ensure the zip is created before the Lambda function
@@ -13,10 +13,11 @@ resource "null_resource" "zip_lambda_function_code" {
 # Define the Lambda function for incrementing the counter
 resource "aws_lambda_function" "frontend_lambda" {
   function_name = var.lambda_name
-  filename      = "../lambda_function.zip"
+  filename      = "../terraform/lambda_function.zip"
   handler       = "lambda_function.lambda_handler"
   runtime       = var.lambda_runtime
   role          = aws_iam_role.lambda_role.arn
+  source_code_hash = filebase64sha256("${path.module}/lambda_function.zip")
 
   # Ensure the Lambda function is created after the zip file
   depends_on = [
