@@ -4,15 +4,13 @@ resource "aws_cloudfront_distribution" "frontend_distribution" {
   depends_on = [aws_acm_certificate.cert]
 
   origin {
-    domain_name = "${aws_s3_bucket.frontend_bucket.website_endpoint}"
+    domain_name = "${aws_s3_bucket.frontend_bucket.bucket_regional_domain_name}"
     origin_id   = "S3-${aws_s3_bucket.frontend_bucket.bucket}"
 
-    custom_origin_config {
-      http_port              = 80
-      https_port             = 443
-      origin_protocol_policy = "http-only"
-      origin_ssl_protocols   = ["TLSv1.2"]
+    s3_origin_config {
+      origin_access_identity = ""
     }
+
   }
 
   enabled             = true
