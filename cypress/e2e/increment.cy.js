@@ -5,7 +5,14 @@ describe('API Tests', () => {
     let initialCounter;
 
     // Initial GET request to fetch the current counter value
-    cy.request(apiUrl).then((response) => {
+    cy.request({
+      method: 'POST',
+      url: apiUrl,
+      body: JSON.stringify({ tableName: "DYNAMODB_TABLE_NAME" }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
       initialCounter = parseInt(response.body, 10);
 
       // POST request to increment the counter
