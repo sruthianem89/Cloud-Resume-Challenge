@@ -64,17 +64,18 @@ jobs:
             initialize_function_url=$(python3 -c "import json; import sys; print(json.load(sys.stdin)['initialize_dynamodb_url']['value'])" < filtered_terraform_output.json)
             lambda_function_url=$(python3 -c "import json; import sys; print(json.load(sys.stdin)['lambda_function_url']['value'])" < filtered_terraform_output.json)
             bucket_name=$(python3 -c "import json; import sys; print(json.load(sys.stdin)['bucket_name']['value'])" < filtered_terraform_output.json)
-
             
             echo "DYNAMODB_TABLE_NAME=$dynamodb_table_name"
             echo "INITIALIZE_FUNCTION_URL=$initialize_function_url"
             echo "LAMBDA_FUNCTION_URL=$lambda_function_url"
             echo "BUCKET_NAME=$bucket_name"
+    
   
             echo "DYNAMODB_TABLE_NAME=$dynamodb_table_name" >> $GITHUB_ENV
             echo "INITIALIZE_FUNCTION_URL=$initialize_function_url" >> $GITHUB_ENV
             echo "LAMBDA_FUNCTION_URL=$lambda_function_url" >> $GITHUB_ENV
             echo "BUCKET_NAME=$bucket_name" >> $GITHUB_ENV
+            
           else
             echo "terraform_output.json not found"
             exit 1
@@ -95,6 +96,7 @@ jobs:
             echo "initialize_function_url=$initialize_function_url" >> $GITHUB_ENV
             echo "dynamodb_table_name=$dynamodb_table_name" >> $GITHUB_ENV
             echo "bucket_name=$bucket_name" >> $GITHUB_ENV
+            
 
       env:
         LAMBDA_FUNCTION_URL: ${{ env.LAMBDA_FUNCTION_URL }}

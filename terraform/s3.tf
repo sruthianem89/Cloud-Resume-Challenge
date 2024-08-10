@@ -4,6 +4,11 @@ resource "aws_s3_bucket" "frontend_bucket" {
   bucket = var.bucket_name
 }
 
+resource "time_sleep" "wait_for_bucket" {
+  depends_on = [aws_s3_bucket.frontend_bucket]
+  create_duration = "30s"
+}
+
 resource "aws_s3_bucket_website_configuration" "frontend_bucket_website" {
   bucket = aws_s3_bucket.frontend_bucket.bucket
 
@@ -67,7 +72,11 @@ resource "aws_s3_bucket_policy" "frontend_bucket_policy" {
 	]
   })
 
-  depends_on = [aws_s3_bucket.frontend_bucket]
+  depends_on = [
+    aws_s3_bucket.frontend_bucket,
+    time_sleep.wait_for_bucket
+  ]
+  
 }
 
 resource "aws_s3_bucket_public_access_block" "frontend_bucket_public_access_block" {

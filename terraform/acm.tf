@@ -46,7 +46,3 @@ resource "cloudflare_record" "cert_validation" {
   depends_on = [aws_acm_certificate.cert]
 }
 
-# Output the ARN of the certificate
-output "certificate_arn" {
-  value = aws_acm_certificate.cert.arn
-}

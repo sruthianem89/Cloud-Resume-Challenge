@@ -17,3 +17,13 @@ output "initialize_dynamodb_url" {
 output "bucket_name" {
   value = aws_s3_bucket.frontend_bucket.bucket
 }
+
+# Output the ARN of the certificate
+output "acm_arn" {
+  value = aws_acm_certificate.cert.arn
+}
+
+#Cloudfront distribution endpoint
+output "cloudfront_distribution_domain_name" {
+    value = aws_cloudfront_distribution.frontend_distribution.domain_name
+}

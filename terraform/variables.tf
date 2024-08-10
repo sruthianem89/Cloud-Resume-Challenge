@@ -35,8 +35,19 @@ variable "state_name" {
 }
 
 
+
 variable "cloudflare_api_token" {
   description = "API token for Cloudflare"
   type        = string
   sensitive   = true
+}
+
+variable "alternate_domain_names" {
+  description = "List of alternate domain names for the CloudFront distribution"
+  type        = list(string)
+}
+
+variable "acm_arn" {
+  description = "ARN of the ACM certificate"
+  type        = string
 }
