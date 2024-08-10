@@ -1,11 +1,11 @@
 region_name = "us-east-1"
-bucket_name = "sruthiweb"
-lambda_name = "sruthilambda"
-lambda_initialize_dynamodb_name = "sruthiinitialize"
-dynamodb_name = "sruthidynamodb"
+bucket_name = "techportfolio"
+lambda_name = "increment_visits"
+lambda_initialize_dynamodb_name = "initialize_visits"
+dynamodb_name = "web_visits"
 lambda_runtime = "python3.11"
 state_name = "terraformstatesru" #s3 bucket should be created prior manually to store the state file
 alternate_domain_names = ["sruthianem.com", "*.sruthianem.com","www.sruthianem.com"]
-lambda_reset_name = "resetlambda"
+lambda_reset_name = "reset_visits"
 domain_name = "sruthianem.com"
 sub_domain_name = "*.sruthianem.com"
