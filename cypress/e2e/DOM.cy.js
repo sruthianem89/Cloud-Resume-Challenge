@@ -11,7 +11,7 @@ describe('Web Tests', () => {
     // Wait for the visitor count to be updated and ensure it's not an error message
     cy.get('#count-value', { timeout: 20000 }) // Adjust the timeout if needed
       .should(($countValue) => {
-        // Ensure that the count value is not the error message
+        // Ensure that the count value is not an error message
         const text = $countValue.text().trim();
         expect(text).to.not.equal('Error loading count value');
       });
