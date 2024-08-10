@@ -46,8 +46,3 @@ variable "alternate_domain_names" {
   description = "List of alternate domain names for the CloudFront distribution"
   type        = list(string)
 }
-
-variable "acm_arn" {
-  description = "ARN of the ACM certificate"
-  type        = string
-}
