@@ -49,16 +49,5 @@ describe('API Tests', () => {
     }).then((response) => {
       expect(response.status).to.equal(200);
     });
-
-    cy.request({
-      method: 'POST',
-      url: resetUrl,
-      body: JSON.stringify({ tableName: "DYNAMODB_TABLE_NAME" }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then((response) => {
-      expect(response.status).to.equal(200);
-    });
   });
 });
