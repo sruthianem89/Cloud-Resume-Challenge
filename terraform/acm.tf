@@ -27,7 +27,7 @@ resource "aws_acm_certificate" "cert" {
 
 # DNS Validation Record in Cloudflare
 resource "cloudflare_record" "cert_validation" {
-  for_each = { for idx, val in aws_acm_certificate.cert.domain_validation_options : tostring(idx) => val }
+  for_each = { for val in aws_acm_certificate.cert.domain_validation_options : val.resource_record_name => val }
 
   zone_id = data.cloudflare_zones.zone.zones[0].id
   name    = each.value.resource_record_name
