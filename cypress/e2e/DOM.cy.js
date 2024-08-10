@@ -16,7 +16,7 @@ describe('Web Tests', () => {
         expect(text).to.not.equal('Error loading count value');
       });
 
-    // Call the reset URL with the DynamoDB table name in the body
+    // Call the reset URL with the DynamoDB table name in the body to reset the counter
     cy.request({
       method: 'POST',
       url: resetUrl,
