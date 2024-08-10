@@ -14,19 +14,6 @@ describe('Web Tests', () => {
         // Ensure that the count value is not the error message
         const text = $countValue.text().trim();
         expect(text).to.not.equal('Error loading count value');
-      })
-      .finally(() => {
-        // Call the reset URL once the test is successful
-        cy.request({
-          method: 'POST',
-          url: resetUrl,
-          body: JSON.stringify({ tableName: "DYNAMODB_TABLE_NAME" }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }).then((response) => {
-          expect(response.status).to.equal(200);
-        });
       });
   });
 });
