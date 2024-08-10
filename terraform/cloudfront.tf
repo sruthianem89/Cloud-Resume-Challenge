@@ -1,3 +1,5 @@
+#ACM Certificate is required for CloudFront distribution
+
 resource "aws_cloudfront_distribution" "frontend_distribution" {
   depends_on = [aws_acm_certificate.cert]
 
