@@ -33,3 +33,10 @@ variable "state_name" {
   description = "The name of the terraform state file"
   type        = string
 }
+
+
+variable "cloudflare_api_token" {
+  description = "API token for Cloudflare"
+  type        = string
+  sensitive   = true
+}

@@ -35,10 +35,10 @@ jobs:
 
     - name: Terraform Apply
       working-directory: ./terraform
+      env:
+        TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       run: terraform apply -auto-approve
 
-    - name: Check Terraform version
-      run: terraform version
     
     - name: Output Terraform JSON
       working-directory: ./terraform
@@ -139,3 +139,5 @@ jobs:
           INITIALIZE_FUNCTION_URL: ${{ env.INITIALIZE_FUNCTION_URL }}
           DYNAMODB_TABLE_NAME: ${{ env.DYNAMODB_TABLE_NAME }}
           BUCKET_NAME: ${{ env.BUCKET_NAME }}
+
+      
