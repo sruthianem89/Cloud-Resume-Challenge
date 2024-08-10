@@ -8,7 +8,7 @@ data "archive_file" "zip_reset_counter" {
 
 # Define the Lambda function
 resource "aws_lambda_function" "reset_lambda" {
-  function_name = var.lambda_name
+  function_name = var.lambda_reset_name
   filename      = data.archive_file.zip_reset_counter.output_path
   handler       = "reset_counter.lambda_handler"
   source_code_hash = data.archive_file.zip_reset_counter.output_base64sha256
