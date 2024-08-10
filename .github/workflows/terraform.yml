@@ -29,9 +29,9 @@ jobs:
       working-directory: ./terraform
       run: terraform init -upgrade
     
-    #- name: Terraform Refresh
-    #  working-directory: ./terraform
-    #  run: terraform refresh
+    - name: Terraform Refresh
+      working-directory: ./terraform
+      run: terraform refresh
 
     - name: Terraform Apply
       working-directory: ./terraform

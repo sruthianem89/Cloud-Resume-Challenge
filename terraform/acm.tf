@@ -36,7 +36,6 @@ locals {
 }
 
 resource "cloudflare_record" "cert_validation" {
-  for_each = { for idx, val in local.domain_validation_options : idx => val }
 
   zone_id = data.cloudflare_zones.zone.zones[0].id
   name    = each.value.name
