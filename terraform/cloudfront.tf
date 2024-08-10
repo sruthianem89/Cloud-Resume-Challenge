@@ -1,13 +1,15 @@
-#dependent on ACM certificate creation
 resource "aws_cloudfront_distribution" "frontend_distribution" {
-  
   depends_on = [aws_acm_certificate.cert]
+
   origin {
-    domain_name = aws_s3_bucket.frontend_bucket.bucket_regional_domain_name
+    domain_name = "${aws_s3_bucket.frontend_bucket.website_endpoint}"
     origin_id   = "S3-${aws_s3_bucket.frontend_bucket.bucket}"
 
-    s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "http-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
     }
   }
 
@@ -37,7 +39,7 @@ resource "aws_cloudfront_distribution" "frontend_distribution" {
   }
 
   viewer_certificate {
-    acm_certificate_arn 			= aws_acm_certificate.cert.arn
+    acm_certificate_arn            = aws_acm_certificate.cert.arn
     ssl_support_method              = "sni-only"
     minimum_protocol_version        = "TLSv1.2_2019"
   }
@@ -52,8 +54,3 @@ resource "aws_cloudfront_distribution" "frontend_distribution" {
     Name = "frontend-distribution"
   }
 }
-
-resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
-  comment = "OAI for frontend bucket"
-}
-
