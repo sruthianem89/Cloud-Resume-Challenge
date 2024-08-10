@@ -19,6 +19,12 @@ variable "lambda_initialize_dynamodb_name" {
   type        = string
 }
 
+variable "lambda_reset_name" {
+  description = "The name of the lambda function that resets the counter after cypress tests are run"
+  type        = string
+}
+
+
 variable "dynamodb_name" {
   description = "This is the name of the dynamodb table"
   type        = string

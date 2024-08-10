@@ -73,12 +73,14 @@ jobs:
             lambda_function_url=$(python3 -c "import json; import sys; print(json.load(sys.stdin)['lambda_function_url']['value'])" < filtered_terraform_output.json)
             bucket_name=$(python3 -c "import json; import sys; print(json.load(sys.stdin)['bucket_name']['value'])" < filtered_terraform_output.json)
             website_url=$(python3 -c "import json; import sys; print(json.load(sys.stdin)['website_url']['value'])" < filtered_terraform_output.json)
+            reset_function_url=$(python3 -c "import json; import sys; print(json.load(sys.stdin)['reset_function_url']['value'])" < filtered_terraform_output.json)
 
             echo "DYNAMODB_TABLE_NAME=$dynamodb_table_name"
             echo "INITIALIZE_FUNCTION_URL=$initialize_function_url"
             echo "LAMBDA_FUNCTION_URL=$lambda_function_url"
             echo "BUCKET_NAME=$bucket_name"
             echo "WEBSITE_URL=$website_url"
+            echo "RESET_FUNCTION_URL=$reset_function_url"
     
   
             echo "DYNAMODB_TABLE_NAME=$dynamodb_table_name" >> $GITHUB_ENV
@@ -86,6 +88,8 @@ jobs:
             echo "LAMBDA_FUNCTION_URL=$lambda_function_url" >> $GITHUB_ENV
             echo "BUCKET_NAME=$bucket_name" >> $GITHUB_ENV
             echo "WEBSITE_URL=$website_url" >> $GITHUB_ENV
+            echo "RESET_FUNCTION_URL=$reset_function_url" >> $GITHUB_ENV
+
 
           else
             echo "terraform_output.json not found"
@@ -103,12 +107,14 @@ jobs:
             dynamodb_table_name=$(escape_sed "${{ env.DYNAMODB_TABLE_NAME }}")
             bucket_name=$(escape_sed "${{ env.BUCKET_NAME }}")
             website_url=$(escape_sed "${{ env.WEBSITE_URL }}")
+            reset_function_url=$(escape_sed "${{ env.RESET_FUNCTION_URL }}")
             
             echo "lambda_function_url=$lambda_function_url" >> $GITHUB_ENV
             echo "initialize_function_url=$initialize_function_url" >> $GITHUB_ENV
             echo "dynamodb_table_name=$dynamodb_table_name" >> $GITHUB_ENV
             echo "bucket_name=$bucket_name" >> $GITHUB_ENV
             echo "website_url=$website_url" >> $GITHUB_ENV
+            echo "reset_function_url=$reset_function_url" >> $GITHUB_ENV
             
 
       env:
@@ -117,6 +123,7 @@ jobs:
         DYNAMODB_TABLE_NAME: ${{ env.DYNAMODB_TABLE_NAME }}
         BUCKET_NAME: ${{ env.BUCKET_NAME }}
         WEBSITE_URL: ${{ env.WEBSITE_URL }}
+        RESET_FUNCTION_URL: ${{ env.RESET_FUNCTION_URL }}
 
     - name: Update scripts.js with dynamic parameters
       if: ${{ env.LAMBDA_FUNCTION_URL != '' && env.INITIALIZE_FUNCTION_URL != '' && env.DYNAMODB_TABLE_NAME != '' && env.BUCKET_NAME != '' }}
@@ -134,6 +141,7 @@ jobs:
         DYNAMODB_TABLE_NAME: ${{ env.DYNAMODB_TABLE_NAME }}
         BUCKET_NAME: ${{ env.BUCKET_NAME }}
         WEBSITE_URL: ${{ env.WEBSITE_URL }}
+        RESET_FUNCTION_URL: ${{ env.RESET_FUNCTION_URL }}
 
     - name: Debug Environment Variables
       run: |
@@ -141,12 +149,14 @@ jobs:
           echo "LAMBDA_FUNCTION_URL=${{ env.LAMBDA_FUNCTION_URL }}"
           echo "INITIALIZE_FUNCTION_URL=${{ env.INITIALIZE_FUNCTION_URL }}"
           echo "DYNAMODB_TABLE_NAME=${{ env.DYNAMODB_TABLE_NAME }}"
+          echo "RESET_FUNCTION_URL=${{ env.RESET_FUNCTION_URL }}"
       env:
           LAMBDA_FUNCTION_URL: ${{ env.LAMBDA_FUNCTION_URL }}
           INITIALIZE_FUNCTION_URL: ${{ env.INITIALIZE_FUNCTION_URL }}
           DYNAMODB_TABLE_NAME: ${{ env.DYNAMODB_TABLE_NAME }}
           BUCKET_NAME: ${{ env.BUCKET_NAME }}
           WEBSITE_URL: ${{ env.WEBSITE_URL }}
+          RESET_FUNCTION_URL: ${{ env.RESET_FUNCTION_URL }}
 
     - name: Upload updated scripts.js to S3
       if: ${{ env.LAMBDA_FUNCTION_URL && env.INITIALIZE_FUNCTION_URL && env.DYNAMODB_TABLE_NAME && env.BUCKET_NAME }}
@@ -158,6 +168,7 @@ jobs:
           DYNAMODB_TABLE_NAME: ${{ env.DYNAMODB_TABLE_NAME }}
           BUCKET_NAME: ${{ env.BUCKET_NAME }}
           WEBSITE_URL: ${{ env.WEBSITE_URL }}
+          RESET_FUNCTION_URL: ${{ env.RESET_FUNCTION_URL }}
     
     - name: Update cypress scripts with dynamic parameters
       if: ${{ env.LAMBDA_FUNCTION_URL != '' && env.INITIALIZE_FUNCTION_URL != '' && env.DYNAMODB_TABLE_NAME != '' && env.BUCKET_NAME != '' }}
@@ -166,16 +177,20 @@ jobs:
             
             # Update the cypress files
             sed -i "s|LAMBDA_FUNCTION_URL|${{ env.LAMBDA_FUNCTION_URL }}|g" increment.cy.js
+            sed -i "s|RESET_FUNCTION_URL|${{ env.RESET_FUNCTION_URL }}|g" increment.cy.js
             sed -i "s|DYNAMODB_TABLE_NAME|${{ env.DYNAMODB_TABLE_NAME }}|g" increment.cy.js
             sed -i "s|INITIALIZE_FUNCTION_URL|${{ env.INITIALIZE_FUNCTION_URL }}|g" initialize.cy.js
             sed -i "s|DYNAMODB_TABLE_NAME|${{ env.DYNAMODB_TABLE_NAME }}|g" initialize.cy.js
             sed -i "s|WEBSITE_URL|${{ env.WEBSITE_URL}}|g" DOM.cy.js
+            sed -i "s|RESET_FUNCTION_URL|${{ env.RESET_FUNCTION_URL}}|g" DOM.cy.js
+            sed -i "s|DYNAMODB_TABLE_NAME|${{ env.DYNAMODB_TABLE_NAME }}|g" DOM.cy.js
       env:
             LAMBDA_FUNCTION_URL: ${{ env.LAMBDA_FUNCTION_URL }}
             INITIALIZE_FUNCTION_URL: ${{ env.INITIALIZE_FUNCTION_URL }}
             DYNAMODB_TABLE_NAME: ${{ env.DYNAMODB_TABLE_NAME }}
             BUCKET_NAME: ${{ env.BUCKET_NAME }}
             WEBSITE_URL: ${{ env.WEBSITE_URL }}
+            RESET_FUNCTION_URL: ${{ env.RESET_FUNCTION_URL }}
 
 
     - name: Run Cypress tests

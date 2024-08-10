@@ -17,7 +17,8 @@ resource "aws_lambda_function" "frontend_lambda" {
 
   # Ensure the Lambda function is created after the zip file
   depends_on = [
-	data.archive_file.zip_lambda_function
+	aws_iam_role.lambda_role,
+  data.archive_file.zip_lambda_function
   ]
 }
 

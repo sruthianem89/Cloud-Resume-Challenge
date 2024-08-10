@@ -6,3 +6,4 @@ dynamodb_name = "sruthidynamodb"
 lambda_runtime = "python3.11"
 state_name = "terraformstatesru" #s3 bucket should be created prior manually to store the state file
 alternate_domain_names = ["sruthianem.com", "*.sruthianem.com","www.sruthianem.com"]
+lambda_reset_name = "resetlambda"

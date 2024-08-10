@@ -1,5 +1,6 @@
 describe('API Tests', () => {
   const apiUrl = 'LAMBDA_FUNCTION_URL';
+  const resetUrl = 'RESET_FUNCTION_URL'; // Replace with your actual reset URL
 
   it('should update the database', () => {
     let initialCounter;
@@ -29,6 +30,30 @@ describe('API Tests', () => {
       const updatedCounter = parseInt(response.body, 10);
       cy.log('Updated Counter:', updatedCounter);
       expect(updatedCounter).to.eq(initialCounter + 1);
+    }).finally(() => {
+      // Call the reset URL first time
+      cy.request({
+        method: 'POST',
+        url: resetUrl,
+        body: JSON.stringify({ tableName: "DYNAMODB_TABLE_NAME" }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then((response) => {
+        expect(response.status).to.equal(200);
+      });
+    
+      // Call the reset URL a second time
+      cy.request({
+        method: 'POST',
+        url: resetUrl,
+        body: JSON.stringify({ tableName: "DYNAMODB_TABLE_NAME" }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then((response) => {
+        expect(response.status).to.equal(200);
+      });
     });
 
     // Handle any uncaught exceptions
