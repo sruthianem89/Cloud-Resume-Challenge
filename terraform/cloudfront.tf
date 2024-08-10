@@ -1,3 +1,4 @@
+#dependent on ACM certificate creation
 resource "aws_cloudfront_distribution" "frontend_distribution" {
   
   depends_on = [aws_acm_certificate.cert]
