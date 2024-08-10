@@ -15,5 +15,19 @@ describe('Web Tests', () => {
         const text = $countValue.text().trim();
         expect(text).to.not.equal('Error loading count value');
       });
+
+    // Call the reset URL with the DynamoDB table name in the body
+    cy.request({
+      method: 'POST',
+      url: resetUrl,
+      body: {
+        tableName: "DYNAMODB_TABLE_NAME" // Replace with your actual DynamoDB table name
+      },
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
+      expect(response.status).to.equal(200);
+    });
   });
 });

@@ -37,5 +37,28 @@ describe('API Tests', () => {
       cy.log('Error:', err);
       return false; // Prevents Cypress from failing the test
     });
+
+    // Call the reset URL twice with the DynamoDB table name in the body
+    cy.request({
+      method: 'POST',
+      url: resetUrl,
+      body: JSON.stringify({ tableName: "DYNAMODB_TABLE_NAME" }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
+      expect(response.status).to.equal(200);
+    });
+
+    cy.request({
+      method: 'POST',
+      url: resetUrl,
+      body: JSON.stringify({ tableName: "DYNAMODB_TABLE_NAME" }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
+      expect(response.status).to.equal(200);
+    });
   });
 });
