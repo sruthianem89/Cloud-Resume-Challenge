@@ -38,9 +38,9 @@ locals {
 resource "cloudflare_record" "cert_validation" {
 
   zone_id = data.cloudflare_zones.zone.zones[0].id
-  name    = local.domain_validation_options.value.name
-  value   = local.domain_validation_options.value.value
-  type    = local.domain_validation_options.value.type
+  name    = local.domain_validation_options[0].value.name
+  value   = local.domain_validation_options[0].value.value
+  type    = local.domain_validation_options[0].value.type
   ttl     = 300
 
   depends_on = [aws_acm_certificate.cert]
