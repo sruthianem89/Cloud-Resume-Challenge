@@ -25,14 +25,23 @@ resource "aws_acm_certificate" "cert" {
   }
 }
 
-# DNS Validation Record in Cloudflare
+locals {
+  domain_validation_options = [
+    for val in aws_acm_certificate.cert.domain_validation_options : {
+      name  = val.resource_record_name
+      value = val.resource_record_value
+      type  = val.resource_record_type
+    }
+  ]
+}
+
 resource "cloudflare_record" "cert_validation" {
-  for_each = { for val in aws_acm_certificate.cert.domain_validation_options : val.resource_record_name => val }
+  for_each = { for idx, val in local.domain_validation_options : idx => val }
 
   zone_id = data.cloudflare_zones.zone.zones[0].id
-  name    = each.value.resource_record_name
-  value   = each.value.resource_record_value
-  type    = each.value.resource_record_type
+  name    = each.value.name
+  value   = each.value.value
+  type    = each.value.type
   ttl     = 300
 
   depends_on = [aws_acm_certificate.cert]
