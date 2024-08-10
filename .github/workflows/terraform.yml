@@ -167,7 +167,7 @@ jobs:
             # Update the cypress files
             sed -i "s|LAMBDA_FUNCTION_URL|${{ env.LAMBDA_FUNCTION_URL }}|g" increment.cy.js
             sed -i "s|INITIALIZE_FUNCTION_URL|${{ env.INITIALIZE_FUNCTION_URL }}|g" initialize.cy.js
-            sed -i "s|WEBSITE_URL|${{ env.DYNAMODB_TABLE_NAME }}|g" DOM.cy.js
+            sed -i "s|WEBSITE_URL|${{ env.WEBSITE_URL}}|g" DOM.cy.js
       env:
             LAMBDA_FUNCTION_URL: ${{ env.LAMBDA_FUNCTION_URL }}
             INITIALIZE_FUNCTION_URL: ${{ env.INITIALIZE_FUNCTION_URL }}
