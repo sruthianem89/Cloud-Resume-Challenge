@@ -1,7 +1,7 @@
 // cypress/e2e/api/verify_visitor_count.cy.js
 
 describe('Web Tests', () => {
-  const resumeUrl = 'https://www.sruthianem.com'; // Replace with your actual resume URL
+  const resumeUrl = 'WEBSITE_URL'; // Replace with your actual resume URL
 
   it('should display the visitor count in the DOM and not show an error message', () => {
     // Visit the resume page

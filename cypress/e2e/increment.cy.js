@@ -1,5 +1,5 @@
 describe('API Tests', () => {
-    const apiUrl = 'https://ufzbpvnwxu3idxfbhczvwftxoi0xtkux.lambda-url.us-east-1.on.aws/';
+    const apiUrl = 'LAMBDA_FUNCTION_URL';
   
     it('should update the database', () => {
       let initialCounter;
