@@ -3,21 +3,21 @@
 # Retrieve the Cloudflare zone ID
 data "cloudflare_zones" "zone" {
   filter {
-    name = "sruthianem.com"
+    name = var.domain_name
   }
 }
 
 # ACM Certificate
 resource "aws_acm_certificate" "cert" {
-  domain_name       = "sruthianem.com"
+  domain_name       = var.domain_name
   validation_method = "DNS"
 
   subject_alternative_names = [
-    "*.sruthianem.com"
+    var.sub_domain_name
   ]
 
   tags = {
-    Name = "sruthianem-cert"
+    Name = "custom-cert"
   }
 
   lifecycle {

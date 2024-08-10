@@ -52,3 +52,13 @@ variable "alternate_domain_names" {
   description = "List of alternate domain names for the CloudFront distribution"
   type        = list(string)
 }
+
+variable "domain_name" {
+  description = "This is the custom domain name"
+  type        = string
+}
+
+variable "sub_domain_name" {
+  description = "This is the custom sub domain name"
+  type        = string
+}
