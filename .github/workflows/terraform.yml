@@ -181,7 +181,7 @@ jobs:
             sed -i "s|DYNAMODB_TABLE_NAME|${{ env.DYNAMODB_TABLE_NAME }}|g" increment.cy.js
             sed -i "s|INITIALIZE_FUNCTION_URL|${{ env.INITIALIZE_FUNCTION_URL }}|g" initialize.cy.js
             sed -i "s|DYNAMODB_TABLE_NAME|${{ env.DYNAMODB_TABLE_NAME }}|g" initialize.cy.js
-            sed -i "s|WEBSITE_URL|${{ env.WEBSITE_URL}}|g" DOM.cy.js
+            
 
       env:
             LAMBDA_FUNCTION_URL: ${{ env.LAMBDA_FUNCTION_URL }}
