@@ -1,4 +1,4 @@
-// cypress/e2e/api/verify_visitor_count.cy.js
+
 describe('Web Tests', () => {
 	const resumeUrl = 'WEBSITE_URL'; // Replace with your actual resume URL
 	const resetUrl = 'RESET_FUNCTION_URL'; // Replace with your actual reset URL
