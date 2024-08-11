@@ -8,7 +8,7 @@ describe('API Tests', () => {
     // Initial POST request to fetch the current counter value
     cy.request({
       method: 'POST',
-      url: `${apiUrl}/getCounter`, 
+      url: ${apiUrl}/getCounter, 
       body: JSON.stringify({ tableName: "DYNAMODB_TABLE_NAME" }),
       headers: {
         'Content-Type': 'application/json'
@@ -36,6 +36,20 @@ describe('API Tests', () => {
     cy.on('uncaught:exception', (err, runnable) => {
       cy.log('Error:', err);
       return false; // Prevents Cypress from failing the test
+    });
+  });
+
+  afterEach(() => {
+    // Call the reset URL twice with the DynamoDB table name in the body
+    cy.request({
+      method: 'POST',
+      url: resetUrl,
+      body: JSON.stringify({ tableName: "DYNAMODB_TABLE_NAME" }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
+      expect(response.status).to.equal(200);
     });
   });
 });
