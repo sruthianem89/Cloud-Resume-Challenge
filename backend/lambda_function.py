@@ -25,7 +25,7 @@ def lambda_handler(event, context):
         item = response.get('Item')
 
         if item:
-            # Increment the counter by 1
+            # Increment the counter
             counter = item[counter_attribute] + 1
             item[counter_attribute] = counter
 
