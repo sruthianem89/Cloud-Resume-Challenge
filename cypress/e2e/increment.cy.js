@@ -1,6 +1,6 @@
 describe('API Tests', () => {
   const apiUrl = 'LAMBDA_FUNCTION_URL';
-  const resetUrl = 'RESET_FUNCTION_URL'; // Replace with your actual reset URL
+  const resetUrl = 'RESET_FUNCTION_URL'; 
 
   it('should update the database', () => {
     let initialCounter;
@@ -37,7 +37,9 @@ describe('API Tests', () => {
       cy.log('Error:', err);
       return false; // Prevents Cypress from failing the test
     });
+  });
 
+  afterEach(() => {
     // Call the reset URL twice with the DynamoDB table name in the body
     cy.request({
       method: 'POST',
@@ -46,6 +48,17 @@ describe('API Tests', () => {
       headers: {
         'Content-Type': 'application/json'
       }
+    }).then((response) => {
+      expect(response.status).to.equal(200);
+      // Call the reset URL again after the first call is successful
+      return cy.request({
+        method: 'POST',
+        url: resetUrl,
+        body: JSON.stringify({ tableName: "DYNAMODB_TABLE_NAME" }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
     }).then((response) => {
       expect(response.status).to.equal(200);
     });
