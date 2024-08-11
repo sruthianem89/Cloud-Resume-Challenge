@@ -8,7 +8,7 @@ describe('API Tests', () => {
     // Initial POST request to fetch the current counter value
     cy.request({
       method: 'POST',
-      url: ${apiUrl}/getCounter, 
+      url: `${apiUrl}/getCounter`, 
       body: JSON.stringify({ tableName: "DYNAMODB_TABLE_NAME" }),
       headers: {
         'Content-Type': 'application/json'
