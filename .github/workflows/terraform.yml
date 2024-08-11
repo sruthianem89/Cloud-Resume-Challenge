@@ -1,4 +1,4 @@
-name: Terraform Workflow
+name: AWS Infrastructure Deployment
 
 on:
   push:
