@@ -21,3 +21,13 @@ resource "cloudflare_record" "wildcard_subdomain" {
     aws_cloudfront_distribution.frontend_distribution
   ]
 }
+
+# Purge Cloudflare cache for both root domain and subdomain
+resource "cloudflare_zone_cache_purge" "purge_cache" {
+  zone_id = data.cloudflare_zones.zone.zones[0].id
+
+  depends_on = [
+    cloudflare_record.root_domain,
+    cloudflare_record.wildcard_subdomain
+  ]
+}

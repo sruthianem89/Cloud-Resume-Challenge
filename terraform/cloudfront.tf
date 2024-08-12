@@ -54,3 +54,9 @@ resource "aws_cloudfront_distribution" "frontend_distribution" {
     Name = "frontend-distribution"
   }
 }
+
+# Invalidate CloudFront cache
+resource "aws_cloudfront_distribution_invalidation" "frontend_invalidation" {
+  distribution_id = aws_cloudfront_distribution.frontend_distribution.id
+  paths           = ["/*"]
+}
