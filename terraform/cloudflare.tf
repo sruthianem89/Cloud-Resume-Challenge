@@ -33,6 +33,10 @@ resource "null_resource" "purge_cache" {
     EOT
   }
 
+   triggers = {
+    always_run = "${timestamp()}"
+  }
+
   depends_on = [
     cloudflare_record.root_domain,
     cloudflare_record.wildcard_subdomain

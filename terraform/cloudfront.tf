@@ -63,6 +63,10 @@ resource "null_resource" "frontend_invalidation" {
     EOT
   }
 
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
   depends_on = [
     aws_cloudfront_distribution.frontend_distribution
   ]
