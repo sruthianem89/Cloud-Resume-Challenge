@@ -56,7 +56,14 @@ resource "aws_cloudfront_distribution" "frontend_distribution" {
 }
 
 # Invalidate CloudFront cache
-resource "aws_cloudfront_distribution_invalidation" "frontend_invalidation" {
-  distribution_id = aws_cloudfront_distribution.frontend_distribution.id
-  paths           = ["/*"]
+resource "null_resource" "frontend_invalidation" {
+  provisioner "local-exec" {
+    command = <<EOT
+      aws cloudfront create-invalidation --distribution-id ${aws_cloudfront_distribution.frontend_distribution.id} --paths "/*"
+    EOT
+  }
+
+  depends_on = [
+    aws_cloudfront_distribution.frontend_distribution
+  ]
 }
