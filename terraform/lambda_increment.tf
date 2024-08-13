@@ -1,4 +1,4 @@
-# Zip Lambda function code
+#This code will zip the .py lambda function
 data "archive_file" "zip_lambda_function" {
   type        = "zip"
   source_file = "../backend/lambda_function.py"
