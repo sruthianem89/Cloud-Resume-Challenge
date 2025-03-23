@@ -1,6 +1,6 @@
 - Github user with permissions should be created and the credentials should be added as GitHub secrets.
 - `terraformstatesru` S3 bucket should be created manually to store the state file.
-- `techportfolio` S3 bucket should be deleted.
+- `techportfolio` S3 bucket should be deleted manually if terraform destroy does not delete it.
 - Cloudflare API token should be added as GitHub secrets.
 - Region should be added to GitHub secrets.
 - If the infrastructure is destroyed using `terraform destroy`, remove the state file manually from the state bucket.
